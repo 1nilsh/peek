@@ -1,0 +1,6 @@
+// Shared build settings for all targets (see project.yml).
+//
+// Signing: create Config/Signing.local.xcconfig (gitignored) containing
+//     DEVELOPMENT_TEAM = <your team ID>
+// The team ID also prefixes the App Group shared by the app and its extensions.
+#include? "Signing.local.xcconfig"

@@ -5,9 +5,13 @@ options:
     macOS: "26.0"
   createIntermediateGroups: true
 
+configFiles:
+  Debug: Config/Base.xcconfig
+  Release: Config/Base.xcconfig
+
 settings:
   base:
-    DEVELOPMENT_TEAM: P4VP8V854B
+    # DEVELOPMENT_TEAM comes from Config/Signing.local.xcconfig.
     CODE_SIGN_STYLE: Automatic
     ENABLE_HARDENED_RUNTIME: YES
     DEAD_CODE_STRIPPING: YES

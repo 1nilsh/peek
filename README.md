@@ -17,7 +17,11 @@ Quick Look previews and Finder thumbnails for Markdown and source code on macOS 
 
 ## Build
 
-Requires Xcode 27 and [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`).
+Requires Xcode 27, [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`) and an Apple developer team for signing:
+
+```sh
+echo 'DEVELOPMENT_TEAM = <your team ID>' > Config/Signing.local.xcconfig   # gitignored
+```
 
 ```sh
 scripts/build.sh                         # → build/Build/Products/Debug/Peek.app
