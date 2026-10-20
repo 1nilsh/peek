@@ -25,7 +25,33 @@ scripts/ql-status.sh                     # check registration
 qlmanage -p Fixtures/sample.swift        # preview from the command line
 ```
 
-`PeekKit` tests run standalone: `cd PeekKit && swift test`.
+`PeekKit` tests run standalone: `cd PeekKit && swift test` (`PEEK_BENCH=1` adds highlighter timings).
+
+## Architecture
+
+Both extensions are thin wrappers around `FormatRegistry` (`PeekKit/Sources/PeekFormats`), which maps a file's content type to a `FormatRenderer`. A renderer returns HTML for the preview and an `NSAttributedString` for the thumbnail page.
+
+| Module | Role |
+|---|---|
+| `PeekCore` | `FormatRenderer` protocol, settings (App Group), themes, HTML page, text file reading, thumbnail page |
+| `PeekHighlight` | highlight.js in JavaScriptCore; highlighted HTML → lines / attributed string |
+| `Formats/*` | One module per format |
+| `PeekFormats` | `FormatRegistry` |
+
+Previews run JavaScript, so `HTMLPage` sets a Content-Security-Policy that blocks scripts and remote content.
+
+### Adding a format
+
+1. Create `PeekKit/Sources/Formats/<Name>/` with a type conforming to `FormatRenderer`; add the target to `Package.swift` and as a dependency of `PeekFormats`.
+2. Append the renderer to `FormatRegistry.renderers`.
+3. List its content types under `QLSupportedContentTypes` in `project.yml`. Types macOS doesn't declare go into `UTImportedTypeDeclarations` of the app target.
+4. `swift test` fails if the registry and `project.yml` disagree.
+
+### Content type caveats
+
+- Supported types are fixed at build time; Quick Look can't be extended at runtime.
+- Some extensions are owned by system types and can't be claimed, e.g. `.ts` (MPEG-2 transport stream) and `.txt`.
+- An app exporting a type for an extension (e.g. `org.vuejs.vue`) overrides Peek's imported declaration. Such types still reach Peek if they conform to `public.source-code`; the language then comes from the file extension.
 
 ## License
 

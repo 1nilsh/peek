@@ -36,6 +36,38 @@ targets:
         LSApplicationCategoryType: public.app-category.developer-tools
         NSHumanReadableCopyright: © Nils Hodys. MIT License.
         PeekAppGroup: $(PEEK_APP_GROUP)
+        # Imported: an app exporting the same identifier takes precedence. Third-party identifiers are imported
+        # so they exist without their owning app; bz.nils.peek.source.* replace dyn.* types.
+        UTImportedTypeDeclarations:
+          - {UTTypeIdentifier: com.microsoft.typescript, UTTypeDescription: TypeScript JSX source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [tsx]}}
+          - {UTTypeIdentifier: public.toml, UTTypeDescription: TOML document, UTTypeConformsTo: [public.plain-text], UTTypeTagSpecification: {public.filename-extension: [toml]}}
+          - {UTTypeIdentifier: com.microsoft.ini, UTTypeDescription: INI configuration, UTTypeConformsTo: [public.plain-text], UTTypeTagSpecification: {public.filename-extension: [ini]}}
+          - {UTTypeIdentifier: com.microsoft.c-sharp, UTTypeDescription: C# source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [cs]}}
+          - {UTTypeIdentifier: org.kotlinlang.source, UTTypeDescription: Kotlin source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [kt, kts]}}
+          - {UTTypeIdentifier: org.golang.go-script, UTTypeDescription: Go source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [go]}}
+          - {UTTypeIdentifier: org.rust-lang.rust-script, UTTypeDescription: Rust source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [rs]}}
+          - {UTTypeIdentifier: org.lua.lua-source, UTTypeDescription: Lua source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [lua]}}
+          - {UTTypeIdentifier: org.iso.sql, UTTypeDescription: SQL source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [sql]}}
+          - {UTTypeIdentifier: org.scala-lang.scala-source, UTTypeDescription: Scala source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [scala, sc]}}
+          - {UTTypeIdentifier: dev.dart.dart-script, UTTypeDescription: Dart source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [dart]}}
+          - {UTTypeIdentifier: org.haskell.haskell-script, UTTypeDescription: Haskell source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [hs, lhs]}}
+          - {UTTypeIdentifier: public.protobuf-source, UTTypeDescription: Protocol Buffers source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [proto]}}
+          - {UTTypeIdentifier: bz.nils.peek.source.javascript, UTTypeDescription: JavaScript source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [jsx, cjs]}}
+          - {UTTypeIdentifier: bz.nils.peek.source.jsonc, UTTypeDescription: JSON with comments, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [jsonc, json5]}}
+          - {UTTypeIdentifier: bz.nils.peek.source.fish, UTTypeDescription: Fish script, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [fish]}}
+          - {UTTypeIdentifier: bz.nils.peek.source.scss, UTTypeDescription: SCSS stylesheet, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [scss]}}
+          - {UTTypeIdentifier: bz.nils.peek.source.less, UTTypeDescription: Less stylesheet, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [less]}}
+          - {UTTypeIdentifier: bz.nils.peek.source.vue, UTTypeDescription: Vue component, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [vue]}}
+          - {UTTypeIdentifier: bz.nils.peek.source.svelte, UTTypeDescription: Svelte component, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [svelte]}}
+          - {UTTypeIdentifier: bz.nils.peek.source.graphql, UTTypeDescription: GraphQL source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [graphql, gql]}}
+          - {UTTypeIdentifier: bz.nils.peek.source.cmake, UTTypeDescription: CMake script, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [cmake]}}
+          - {UTTypeIdentifier: bz.nils.peek.source.groovy, UTTypeDescription: Groovy source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [groovy, gradle]}}
+          - {UTTypeIdentifier: bz.nils.peek.source.elixir, UTTypeDescription: Elixir source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [ex, exs]}}
+          - {UTTypeIdentifier: bz.nils.peek.source.erlang, UTTypeDescription: Erlang source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [erl, hrl]}}
+          - {UTTypeIdentifier: bz.nils.peek.source.ocaml, UTTypeDescription: OCaml source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [ml, mli]}}
+          - {UTTypeIdentifier: bz.nils.peek.source.clojure, UTTypeDescription: Clojure source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [clj, cljs, cljc, edn]}}
+          - {UTTypeIdentifier: bz.nils.peek.source.nix, UTTypeDescription: Nix expression, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [nix]}}
+          - {UTTypeIdentifier: bz.nils.peek.source.dockerfile, UTTypeDescription: Dockerfile, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [dockerfile, containerfile]}}
     entitlements:
       path: App/Peek.entitlements
       properties:
@@ -68,22 +100,58 @@ targets:
             QLSupportsSearchableItems: false
             # Must match FormatRegistry; shared with PeekThumbnail via the YAML anchor.
             QLSupportedContentTypes: &contentTypes
-              - net.daringfireball.markdown
+              - public.source-code
               - public.swift-source
               - public.python-script
               - com.netscape.javascript-source
+              - com.microsoft.typescript
               - public.json
               - public.yaml
               - public.toml
+              - com.microsoft.ini
               - public.shell-script
+              - public.bash-script
+              - public.zsh-script
               - public.c-source
               - public.c-header
               - public.c-plus-plus-source
+              - public.c-plus-plus-header
+              - public.objective-c-source
+              - public.objective-c-plus-plus-source
+              - com.microsoft.c-sharp
+              - com.sun.java-source
+              - org.kotlinlang.source
+              - org.golang.go-script
+              - org.rust-lang.rust-script
+              - public.ruby-script
+              - public.perl-script
+              - public.php-script
+              - org.lua.lua-source
               - org.iso.sql
               - public.xml
               - public.css
-              - public.source-code
-              - public.plain-text
+              - public.make-source
+              - public.patch-file
+              - org.scala-lang.scala-source
+              - dev.dart.dart-script
+              - org.haskell.haskell-script
+              - public.protobuf-source
+              - bz.nils.peek.source.javascript
+              - bz.nils.peek.source.jsonc
+              - bz.nils.peek.source.fish
+              - bz.nils.peek.source.scss
+              - bz.nils.peek.source.less
+              - bz.nils.peek.source.vue
+              - bz.nils.peek.source.svelte
+              - bz.nils.peek.source.graphql
+              - bz.nils.peek.source.cmake
+              - bz.nils.peek.source.groovy
+              - bz.nils.peek.source.elixir
+              - bz.nils.peek.source.erlang
+              - bz.nils.peek.source.ocaml
+              - bz.nils.peek.source.clojure
+              - bz.nils.peek.source.nix
+              - bz.nils.peek.source.dockerfile
     entitlements:
       path: Extensions/Preview/PeekPreview.entitlements
       properties:
@@ -93,7 +161,7 @@ targets:
       - package: PeekKit
         product: PeekCore
       - package: PeekKit
-        product: PeekHighlight
+        product: PeekFormats
 
   PeekThumbnail:
     type: app-extension
@@ -121,3 +189,5 @@ targets:
     dependencies:
       - package: PeekKit
         product: PeekCore
+      - package: PeekKit
+        product: PeekFormats
