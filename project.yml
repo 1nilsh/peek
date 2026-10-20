@@ -1,0 +1,123 @@
+name: Peek
+
+options:
+  deploymentTarget:
+    macOS: "26.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    DEVELOPMENT_TEAM: P4VP8V854B
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_HARDENED_RUNTIME: YES
+    DEAD_CODE_STRIPPING: YES
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    # Team-prefixed (not "group.") so macOS doesn't prompt for cross-app data access.
+    PEEK_APP_GROUP: $(DEVELOPMENT_TEAM).bz.nils.peek
+
+packages:
+  PeekKit:
+    path: PeekKit
+
+targets:
+  Peek:
+    type: application
+    platform: macOS
+    sources: [App]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: bz.nils.peek
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Peek
+        LSApplicationCategoryType: public.app-category.developer-tools
+        NSHumanReadableCopyright: © Nils Hodys. MIT License.
+        PeekAppGroup: $(PEEK_APP_GROUP)
+    entitlements:
+      path: App/Peek.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.application-groups: [$(PEEK_APP_GROUP)]
+    dependencies:
+      - target: PeekPreview
+      - target: PeekThumbnail
+      - package: PeekKit
+        product: PeekCore
+    scheme: {}
+
+  PeekPreview:
+    type: app-extension
+    platform: macOS
+    sources: [Extensions/Preview]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: bz.nils.peek.preview
+    info:
+      path: Extensions/Preview/Info.plist
+      properties:
+        CFBundleDisplayName: Peek Preview
+        PeekAppGroup: $(PEEK_APP_GROUP)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.quicklook.preview
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).PreviewProvider
+          NSExtensionAttributes:
+            QLIsDataBasedPreview: true
+            QLSupportsSearchableItems: false
+            # Must match FormatRegistry; shared with PeekThumbnail via the YAML anchor.
+            QLSupportedContentTypes: &contentTypes
+              - net.daringfireball.markdown
+              - public.swift-source
+              - public.python-script
+              - com.netscape.javascript-source
+              - public.json
+              - public.yaml
+              - public.toml
+              - public.shell-script
+              - public.c-source
+              - public.c-header
+              - public.c-plus-plus-source
+              - org.iso.sql
+              - public.xml
+              - public.css
+              - public.source-code
+              - public.plain-text
+    entitlements:
+      path: Extensions/Preview/PeekPreview.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.application-groups: [$(PEEK_APP_GROUP)]
+    dependencies:
+      - package: PeekKit
+        product: PeekCore
+      - package: PeekKit
+        product: PeekHighlight
+
+  PeekThumbnail:
+    type: app-extension
+    platform: macOS
+    sources: [Extensions/Thumbnail]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: bz.nils.peek.thumbnail
+    info:
+      path: Extensions/Thumbnail/Info.plist
+      properties:
+        CFBundleDisplayName: Peek Thumbnail
+        PeekAppGroup: $(PEEK_APP_GROUP)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.quicklook.thumbnail
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ThumbnailProvider
+          NSExtensionAttributes:
+            QLThumbnailMinimumDimension: 0
+            QLSupportedContentTypes: *contentTypes
+    entitlements:
+      path: Extensions/Thumbnail/PeekThumbnail.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.application-groups: [$(PEEK_APP_GROUP)]
+    dependencies:
+      - package: PeekKit
+        product: PeekCore

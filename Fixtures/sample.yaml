@@ -1,0 +1,7 @@
+# Sample YAML
+name: peek
+formats:
+  - markdown
+  - source
+thumbnails: true
+limit: 200000

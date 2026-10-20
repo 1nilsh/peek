@@ -1,0 +1,2 @@
+Plain text sample. If Peek's diagnostic table appears in this preview,
+Peek's preview extension won the claim on public.plain-text.

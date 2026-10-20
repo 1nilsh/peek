@@ -1,0 +1,7 @@
+{
+  "name": "peek",
+  "version": "0.1.0",
+  "formats": ["markdown", "source"],
+  "thumbnails": true,
+  "limit": 200000
+}
