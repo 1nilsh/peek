@@ -5,7 +5,8 @@ public enum CodeBlock {
         guard lineNumbers else { return "<pre class=\"code\"\(lang)><code>\(result.html)</code></pre>" }
         let lines = HighlightedHTML.lines(result.html)
         let digits = String(lines.count).count
-        let body = lines.map { "<span class=\"line\">\($0)</span>" }.joined(separator: "\n")
+        // No newline between lines: they are display:block, and a preserved "\n" would add a blank line.
+        let body = lines.map { "<span class=\"line\">\($0)</span>" }.joined()
         return "<pre class=\"code numbered\" style=\"--digits: \(digits)\"\(lang)><code>\(body)</code></pre>"
     }
 

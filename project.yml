@@ -25,7 +25,12 @@ targets:
   Peek:
     type: application
     platform: macOS
-    sources: [App]
+    sources:
+      - App
+      # Samples for the live preview, copied as a folder.
+      - path: Fixtures
+        type: folder
+        buildPhase: resources
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: bz.nils.peek
@@ -74,11 +79,15 @@ targets:
       properties:
         com.apple.security.app-sandbox: true
         com.apple.security.application-groups: [$(PEEK_APP_GROUP)]
+        # WKWebView's helper processes fail to launch in a sandboxed app without it, even for local HTML.
+        com.apple.security.network.client: true
     dependencies:
       - target: PeekPreview
       - target: PeekThumbnail
       - package: PeekKit
         product: PeekCore
+      - package: PeekKit
+        product: PeekFormats
     scheme: {}
 
   PeekPreview:

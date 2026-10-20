@@ -3,6 +3,9 @@ import UniformTypeIdentifiers
 
 /// A file format Peek can preview and thumbnail. Register new formats in `FormatRegistry`.
 public protocol FormatRenderer: Sendable {
+    /// Shown in the host app, e.g. "Markdown".
+    var displayName: String { get }
+
     /// UTI identifiers handled by this renderer. Strings rather than `UTType`s, because
     /// imported types are unknown outside the app bundle. Must match `QLSupportedContentTypes` in project.yml.
     var contentTypes: [String] { get }

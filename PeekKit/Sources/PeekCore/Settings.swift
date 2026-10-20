@@ -44,4 +44,18 @@ public struct Settings: Sendable, Equatable {
         if let v = d.string(forKey: Key.rawHTML.rawValue).flatMap(RawHTMLMode.init) { s.rawHTML = v }
         return s
     }
+
+    public func save(to defaults: UserDefaults? = AppGroup.defaults) {
+        guard let d = defaults else { return }
+        d.set(themeID, forKey: Key.themeID.rawValue)
+        d.set(fontFamily, forKey: Key.fontFamily.rawValue)
+        d.set(fontSize, forKey: Key.fontSize.rawValue)
+        d.set(wordWrap, forKey: Key.wordWrap.rawValue)
+        d.set(lineNumbers, forKey: Key.lineNumbers.rawValue)
+        d.set(tabWidth, forKey: Key.tabWidth.rawValue)
+        d.set(highlightLimit, forKey: Key.highlightLimit.rawValue)
+        d.set(showFrontMatter, forKey: Key.showFrontMatter.rawValue)
+        d.set(allowRemoteImages, forKey: Key.allowRemoteImages.rawValue)
+        d.set(rawHTML.rawValue, forKey: Key.rawHTML.rawValue)
+    }
 }

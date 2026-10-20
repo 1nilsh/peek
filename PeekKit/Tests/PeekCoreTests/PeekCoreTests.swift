@@ -52,6 +52,17 @@ import Testing
         #expect(s.wordWrap == false)
         #expect(s.fontSize == 16)
     }
+
+    @Test func saveRoundTrips() {
+        let d = UserDefaults(suiteName: "peek-test-\(UUID().uuidString)")!
+        var s = Settings()
+        s.themeID = "github"
+        s.lineNumbers = true
+        s.tabWidth = 2
+        s.rawHTML = .escape
+        s.save(to: d)
+        #expect(Settings.load(from: d) == s)
+    }
 }
 
 @Suite struct HTMLPageTests {

@@ -9,6 +9,8 @@ public struct MarkdownRenderer: FormatRenderer {
 
     public init() {}
 
+    public var displayName: String { "Markdown" }
+
     public var contentTypes: [String] { ["net.daringfireball.markdown"] }
 
     public func preview(of file: URL, context: RenderContext) throws -> PreviewDocument {

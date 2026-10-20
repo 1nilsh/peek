@@ -5,6 +5,8 @@ import PeekHighlight
 public struct SourceCodeRenderer: FormatRenderer {
     public init() {}
 
+    public var displayName: String { "Source Code" }
+
     public var contentTypes: [String] { LanguageMap.contentTypes }
 
     public func preview(of file: URL, context: RenderContext) throws -> PreviewDocument {

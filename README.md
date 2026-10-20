@@ -7,7 +7,7 @@ Quick Look previews and Finder thumbnails for Markdown and source code on macOS 
 | Path | Contents |
 |---|---|
 | `project.yml` | XcodeGen spec; generates `Peek.xcodeproj` (not checked in) |
-| `App/` | Host app (settings, setup help) |
+| `App/` | Host app: setup help, settings with live preview, supported types, file checker |
 | `Extensions/Preview/` | Quick Look preview extension (data-based, returns HTML) |
 | `Extensions/Thumbnail/` | Quick Look thumbnail extension (draws styled text) |
 | `PeekKit/` | Swift package with all rendering logic |
@@ -46,7 +46,7 @@ Quick Look's data-based HTML previews run JavaScript, allow network access and i
 - Raw HTML in Markdown is, depending on the `rawHTML` setting, either sanitized by an allowlist (`HTMLSanitizer`, default) or shown as text. Sanitizing removes scripts, styles, event handlers, embedded frames and remote resources.
 - Links keep only `http`, `https`, `mailto` and relative targets. Remote images load only if `allowRemoteImages` is enabled.
 
-The preview extension may read any file (`temporary-exception.files.absolute-path.read-only`) so Markdown can embed local images.
+The preview extension may read any file (`temporary-exception.files.absolute-path.read-only`) so Markdown can embed local images. The host app has `network.client` because `WKWebView` (live preview, JavaScript disabled) doesn't launch in a sandboxed app without it.
 
 ### Adding a format
 
