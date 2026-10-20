@@ -17,6 +17,21 @@ jobs:
         with:
           fetch-depth: 0 # build number = commit count
 
+      - name: Check secrets
+        env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          DEVELOPER_ID_P12: ${{ secrets.DEVELOPER_ID_P12 }}
+          DEVELOPER_ID_P12_PASSWORD: ${{ secrets.DEVELOPER_ID_P12_PASSWORD }}
+          NOTARY_KEY_P8: ${{ secrets.NOTARY_KEY_P8 }}
+          NOTARY_KEY_ID: ${{ secrets.NOTARY_KEY_ID }}
+          NOTARY_ISSUER_ID: ${{ secrets.NOTARY_ISSUER_ID }}
+        run: |
+          missing=0
+          for name in APPLE_TEAM_ID DEVELOPER_ID_P12 DEVELOPER_ID_P12_PASSWORD NOTARY_KEY_P8 NOTARY_KEY_ID NOTARY_ISSUER_ID; do
+            if [[ -z "${!name}" ]]; then echo "::error::Secret $name is missing or empty"; missing=1; fi
+          done
+          exit $missing
+
       - name: Install XcodeGen
         run: brew install xcodegen
 
