@@ -101,6 +101,12 @@ targets:
             # Must match FormatRegistry; shared with PeekThumbnail via the YAML anchor.
             QLSupportedContentTypes: &contentTypes
               - public.source-code
+              - public.assembly-source
+              - public.csh-script
+              - public.ksh-script
+              - public.tcsh-script
+              - public.swift-interface
+              - public.c-plus-plus-inline-header
               - public.swift-source
               - public.python-script
               - com.netscape.javascript-source

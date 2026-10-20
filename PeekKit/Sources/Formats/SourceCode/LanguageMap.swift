@@ -16,6 +16,11 @@ enum LanguageMap {
         "public.shell-script": "bash",
         "public.bash-script": "bash",
         "public.zsh-script": "bash",
+        "public.csh-script": "bash",
+        "public.ksh-script": "bash",
+        "public.tcsh-script": "bash",
+        "public.swift-interface": "swift",
+        "public.c-plus-plus-inline-header": "cpp",
         "public.c-source": "c",
         "public.c-header": "c",
         "public.c-plus-plus-source": "cpp",
@@ -59,10 +64,9 @@ enum LanguageMap {
     ]
 
     /// Claimed without a fixed language; resolved by file extension or auto-detection.
-    static let genericTypes = ["public.source-code"]
+    static let genericTypes = ["public.source-code", "public.assembly-source"]
 
-    /// Extensions that are not highlight.js names or aliases. Needed when another app's exported type
-    /// (e.g. `org.vuejs.vue`) wins over Peek's imported one and reaches us via `public.source-code`.
+    /// Extensions that are not highlight.js names or aliases, for generic types.
     static let extensions: [String: String] = [
         "vue": "xml", "svelte": "xml", "fish": "bash", "json5": "json", "gradle": "groovy",
         "containerfile": "dockerfile", "hrl": "erlang", "mli": "ocaml", "cljs": "clojure", "cljc": "clojure",

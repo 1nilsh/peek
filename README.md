@@ -51,7 +51,8 @@ Previews run JavaScript, so `HTMLPage` sets a Content-Security-Policy that block
 
 - Supported types are fixed at build time; Quick Look can't be extended at runtime.
 - Some extensions are owned by system types and can't be claimed, e.g. `.ts` (MPEG-2 transport stream) and `.txt`.
-- An app exporting a type for an extension (e.g. `org.vuejs.vue`) overrides Peek's imported declaration. Such types still reach Peek if they conform to `public.source-code`; the language then comes from the file extension.
+- Quick Look dispatches on exact content type identifiers, not conformance: every type must be listed.
+- An app exporting a type for an extension overrides Peek's imported declaration; if Peek doesn't list that identifier, the file isn't previewed by Peek.
 
 ## License
 

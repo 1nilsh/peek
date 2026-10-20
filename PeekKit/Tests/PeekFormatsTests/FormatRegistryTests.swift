@@ -37,10 +37,11 @@ import UniformTypeIdentifiers
         #expect(Self.importedTypes.isSubset(of: FormatRegistry.contentTypes))
     }
 
-    @Test func findsRendererByExactTypeAndConformance() {
+    @Test func findsRendererByExactType() {
         #expect(FormatRegistry.renderer(for: .swiftSource) is SourceCodeRenderer)
-        // Not listed explicitly; conforms to public.source-code.
         #expect(FormatRegistry.renderer(for: .assemblyLanguageSource) is SourceCodeRenderer)
+        // Conforms to public.source-code but is not listed.
+        #expect(FormatRegistry.renderer(for: .appleScript) == nil)
         #expect(FormatRegistry.renderer(for: .png) == nil)
     }
 }
