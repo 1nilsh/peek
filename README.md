@@ -2,6 +2,12 @@
 
 Quick Look previews and Finder thumbnails for Markdown and source code on macOS 26.
 
+## Install
+
+1. Download `Peek-<version>.dmg` from [Releases](https://github.com/1nilsh/peek/releases) and drag Peek into Applications.
+2. Open Peek once so macOS registers its extensions.
+3. Enable Peek under Quick Look in System Settings → General → Login Items & Extensions.
+
 ## Layout
 
 | Path | Contents |
@@ -66,6 +72,33 @@ The preview extension may read any file (`temporary-exception.files.absolute-pat
 - Some extensions are owned by system types and can't be claimed, e.g. `.ts` (MPEG-2 transport stream) and `.txt`.
 - Quick Look dispatches on exact content type identifiers, not conformance: every type must be listed.
 - An app exporting a type for an extension overrides Peek's imported declaration; if Peek doesn't list that identifier, the file isn't previewed by Peek.
+
+## Releasing
+
+Pushing a tag `v<version>` runs `.github/workflows/release.yml`, which calls `scripts/release.sh <version>` (archive, Developer ID signing without provisioning profiles, DMG, notarization, stapling) and publishes `Peek-<version>.dmg` as a GitHub release.
+
+```sh
+git tag v0.1.0 && git push origin v0.1.0
+```
+
+The script also runs locally: `NOTARY_PROFILE=peek-notary scripts/release.sh 0.1.0`. `SKIP_NOTARIZE=1 SIGN_IDENTITY="Apple Development"` tests packaging without a Developer ID certificate.
+
+### One-time setup
+
+1. **Developer ID Application certificate** (requires the Account Holder role): Xcode → Settings → Accounts → team → Manage Certificates → + → Developer ID Application.
+2. **App Store Connect API key** for notarization: [App Store Connect](https://appstoreconnect.apple.com) → Users and Access → Integrations → Team Keys → +, access "Developer". Download the `.p8` (only possible once) and note the Key ID and Issuer ID. For local use:
+   ```sh
+   xcrun notarytool store-credentials peek-notary --key AuthKey_<KEYID>.p8 --key-id <KEYID> --issuer <ISSUER_ID>
+   ```
+3. **Repository secrets** for the workflow. Export the certificate with its private key from Keychain Access (My Certificates → Developer ID Application → Export, `.p12` with a password), then:
+   ```sh
+   gh secret set APPLE_TEAM_ID --body <TEAM_ID>
+   base64 -i developer-id.p12 | gh secret set DEVELOPER_ID_P12
+   gh secret set DEVELOPER_ID_P12_PASSWORD           # prompts
+   gh secret set NOTARY_KEY_P8 < AuthKey_<KEYID>.p8
+   gh secret set NOTARY_KEY_ID --body <KEYID>
+   gh secret set NOTARY_ISSUER_ID --body <ISSUER_ID>
+   ```
 
 ## License
 

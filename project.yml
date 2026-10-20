@@ -16,6 +16,7 @@ settings:
     ENABLE_HARDENED_RUNTIME: YES
     DEAD_CODE_STRIPPING: YES
     SWIFT_VERSION: "6.0"
+    # Overridden by scripts/release.sh (version from the tag, build number from the commit count).
     MARKETING_VERSION: "0.1.0"
     CURRENT_PROJECT_VERSION: "1"
     # Team-prefixed (not "group.") so macOS doesn't prompt for cross-app data access.
@@ -45,6 +46,8 @@ targets:
       path: App/Info.plist
       properties:
         CFBundleDisplayName: Peek
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         LSApplicationCategoryType: public.app-category.developer-tools
         NSHumanReadableCopyright: © Nils Hodys. MIT License.
         PeekAppGroup: $(PEEK_APP_GROUP)
@@ -108,6 +111,8 @@ targets:
       path: Extensions/Preview/Info.plist
       properties:
         CFBundleDisplayName: Peek Preview
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         PeekAppGroup: $(PEEK_APP_GROUP)
         NSExtension:
           NSExtensionPointIdentifier: com.apple.quicklook.preview
@@ -200,6 +205,8 @@ targets:
       path: Extensions/Thumbnail/Info.plist
       properties:
         CFBundleDisplayName: Peek Thumbnail
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         PeekAppGroup: $(PEEK_APP_GROUP)
         NSExtension:
           NSExtensionPointIdentifier: com.apple.quicklook.thumbnail
