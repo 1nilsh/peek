@@ -25,7 +25,7 @@ import Testing
 @Suite struct MarkdownHTMLTests {
     let fixtures = URL(fileURLWithPath: #filePath)
         .deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
-        .appending(path: "Fixtures")
+        .appending(path: "Fixtures/samples")
 
     func render(_ markdown: String, remote: Bool = false) -> MarkdownHTML {
         var walker = MarkdownHTML(baseURL: fixtures, allowRemoteImages: remote)
@@ -80,7 +80,7 @@ import Testing
 @Suite struct MarkdownRendererTests {
     let sample = URL(fileURLWithPath: #filePath)
         .deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
-        .appending(path: "Fixtures/sample.md")
+        .appending(path: "Fixtures/samples/sample.md")
 
     @Test func previewShowsFrontMatterTableAndBody() throws {
         let doc = try MarkdownRenderer().preview(of: sample, context: RenderContext(settings: Settings(), contentType: nil))

@@ -27,6 +27,6 @@ let package = Package(
         .target(name: "PeekFormats", dependencies: ["PeekCore", "PeekSourceCode", "PeekMarkdown"]),
         .testTarget(name: "PeekCoreTests", dependencies: ["PeekCore"]),
         .testTarget(name: "PeekHighlightTests", dependencies: ["PeekHighlight"]),
-        .testTarget(name: "PeekFormatsTests", dependencies: ["PeekFormats", "PeekSourceCode", "PeekMarkdown"]),
+        .testTarget(name: "PeekFormatsTests", dependencies: ["PeekFormats", "PeekSourceCode", "PeekMarkdown", "PeekHighlight"]),
     ]
 )

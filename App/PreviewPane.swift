@@ -3,7 +3,7 @@ import PeekFormats
 import SwiftUI
 import WebKit
 
-/// Sample files bundled from `Fixtures/` (see project.yml).
+/// Sample files bundled from `Fixtures/samples/` (see project.yml).
 enum Sample: String, CaseIterable, Identifiable {
     case markdown = "sample.md"
     case swift = "sample.swift"
@@ -11,7 +11,7 @@ enum Sample: String, CaseIterable, Identifiable {
 
     var id: Self { self }
     var title: String { rawValue }
-    var url: URL? { Bundle.main.url(forResource: rawValue, withExtension: nil, subdirectory: "Fixtures") }
+    var url: URL? { Bundle.main.url(forResource: rawValue, withExtension: nil, subdirectory: "samples") }
 }
 
 /// Live preview of a sample, rendered by the same code as the extensions.

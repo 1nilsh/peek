@@ -27,8 +27,9 @@ targets:
     platform: macOS
     sources:
       - App
-      # Samples for the live preview, copied as a folder.
-      - path: Fixtures
+      # Samples for the live preview (see Sample in App/PreviewPane.swift). A folder reference, because
+      # Xcode won't copy individual .swift files as resources.
+      - path: Fixtures/samples
         type: folder
         buildPhase: resources
     settings:

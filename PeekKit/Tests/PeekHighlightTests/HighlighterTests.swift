@@ -55,6 +55,14 @@ import Testing
         ])
     }
 
+    @Test func reopensNestedSpansOnEachLine() {
+        let html = "<span class=\"a\"><span class=\"b\">x\ny</span>z</span>"
+        #expect(HighlightedHTML.lines(html) == [
+            "<span class=\"a\"><span class=\"b\">x</span></span>",
+            "<span class=\"a\"><span class=\"b\">y</span>z</span>",
+        ])
+    }
+
     @Test func attributedStringUsesRoleColorsAndUnescapes() {
         let palette = Theme.xcode.light
         let html = #"<span class="hljs-keyword">let</span> s = <span class="hljs-string">&quot;&lt;&amp;&gt;&quot;</span>"#

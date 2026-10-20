@@ -49,7 +49,7 @@ import UniformTypeIdentifiers
 @Suite struct SourceCodeRendererTests {
     let fixtures = URL(fileURLWithPath: #filePath)
         .deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
-        .appending(path: "Fixtures")
+        .appending(path: "Fixtures/samples")
 
     @Test func previewHighlightsAndNumbersLines() throws {
         var settings = Settings()

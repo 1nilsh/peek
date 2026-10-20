@@ -25,6 +25,12 @@ import Testing
         #expect(f.byteCount == 17)
     }
 
+    @Test func describesTruncation() throws {
+        let url = try write(Data(String(repeating: "x\n", count: 2_000).utf8))
+        let notice = try #require(try TextFile.read(url, limit: 1_000).truncationNotice)
+        #expect(notice.hasPrefix("Showing "))
+    }
+
     @Test func stripsUTF8BOM() throws {
         let url = try write(Data([0xEF, 0xBB, 0xBF]) + Data("x".utf8))
         #expect(try TextFile.read(url, limit: 100).text == "x")
@@ -62,6 +68,20 @@ import Testing
         s.rawHTML = .escape
         s.save(to: d)
         #expect(Settings.load(from: d) == s)
+    }
+}
+
+@Suite struct ThumbnailPageTests {
+    @Test func keepsPortraitAspectWithinMaximum() {
+        let size = ThumbnailPage.contextSize(fitting: CGSize(width: 256, height: 256))
+        #expect(size.height == 256)
+        #expect(size.width < size.height)
+    }
+
+    @Test func limitsLines() {
+        let text = (1...100).map(String.init).joined(separator: "\n")
+        #expect(ThumbnailPage.head(of: text, maxLines: 3) == "1\n2\n3")
+        #expect(ThumbnailPage.head(of: "a\nb", maxLines: 3) == "a\nb")
     }
 }
 
