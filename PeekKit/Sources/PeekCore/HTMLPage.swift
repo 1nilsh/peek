@@ -2,7 +2,8 @@
 public enum HTMLPage {
     public static func render(body: String, context: RenderContext, css: String = "") -> String {
         let s = context.settings
-        // Previews execute JavaScript (spike S1); the CSP blocks scripts from previewed content.
+        // Quick Look currently ignores this CSP (verified: scripts run, remote loads succeed). Safety comes from
+        // escaping/sanitizing in the renderers; the CSP stays as a second layer should Quick Look start enforcing it.
         let imgSrc = "cid: data:" + (s.allowRemoteImages ? " https:" : "")
         let mono = s.fontFamily.isEmpty ? "ui-monospace, SFMono-Regular, Menlo, monospace" : "\"\(s.fontFamily.htmlEscaped)\", ui-monospace, monospace"
         return """

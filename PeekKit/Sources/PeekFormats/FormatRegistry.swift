@@ -1,4 +1,5 @@
 import PeekCore
+import PeekMarkdown
 import PeekSourceCode
 import UniformTypeIdentifiers
 
@@ -6,6 +7,7 @@ import UniformTypeIdentifiers
 /// content types in project.yml (`FormatRegistryTests` checks both agree).
 public enum FormatRegistry {
     public static let renderers: [any FormatRenderer] = [
+        MarkdownRenderer(),
         SourceCodeRenderer(),
     ]
 

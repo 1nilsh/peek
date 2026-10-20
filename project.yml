@@ -39,6 +39,7 @@ targets:
         # Imported: an app exporting the same identifier takes precedence. Third-party identifiers are imported
         # so they exist without their owning app; bz.nils.peek.source.* replace dyn.* types.
         UTImportedTypeDeclarations:
+          - {UTTypeIdentifier: net.daringfireball.markdown, UTTypeDescription: Markdown document, UTTypeConformsTo: [public.plain-text], UTTypeTagSpecification: {public.filename-extension: [md, markdown, mdown, mkd, mkdn], public.mime-type: [text/markdown]}}
           - {UTTypeIdentifier: com.microsoft.typescript, UTTypeDescription: TypeScript JSX source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [tsx]}}
           - {UTTypeIdentifier: public.toml, UTTypeDescription: TOML document, UTTypeConformsTo: [public.plain-text], UTTypeTagSpecification: {public.filename-extension: [toml]}}
           - {UTTypeIdentifier: com.microsoft.ini, UTTypeDescription: INI configuration, UTTypeConformsTo: [public.plain-text], UTTypeTagSpecification: {public.filename-extension: [ini]}}
@@ -100,6 +101,7 @@ targets:
             QLSupportsSearchableItems: false
             # Must match FormatRegistry; shared with PeekThumbnail via the YAML anchor.
             QLSupportedContentTypes: &contentTypes
+              - net.daringfireball.markdown
               - public.source-code
               - public.assembly-source
               - public.csh-script
@@ -163,6 +165,8 @@ targets:
       properties:
         com.apple.security.app-sandbox: true
         com.apple.security.application-groups: [$(PEEK_APP_GROUP)]
+        # Read images referenced by Markdown files; Quick Look only grants access to the previewed file.
+        com.apple.security.temporary-exception.files.absolute-path.read-only: [/]
     dependencies:
       - package: PeekKit
         product: PeekCore

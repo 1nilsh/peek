@@ -3,7 +3,15 @@ import Foundation
 /// User settings, stored as individual keys in the App Group defaults so SwiftUI can bind them via `@AppStorage`.
 public struct Settings: Sendable, Equatable {
     public enum Key: String, CaseIterable, Sendable {
-        case themeID, fontFamily, fontSize, wordWrap, lineNumbers, tabWidth, highlightLimit, showFrontMatter, allowRemoteImages
+        case themeID, fontFamily, fontSize, wordWrap, lineNumbers, tabWidth, highlightLimit, showFrontMatter, allowRemoteImages, rawHTML
+    }
+
+    /// How raw HTML embedded in Markdown is rendered.
+    public enum RawHTMLMode: String, CaseIterable, Sendable {
+        /// Allowlist of harmless tags and attributes; scripts, styles and remote resources removed.
+        case sanitize
+        /// Shown as literal text.
+        case escape
     }
 
     public var themeID = Theme.xcode.id
@@ -17,6 +25,7 @@ public struct Settings: Sendable, Equatable {
     public var highlightLimit = 200_000
     public var showFrontMatter = true
     public var allowRemoteImages = false
+    public var rawHTML = RawHTMLMode.sanitize
 
     public init() {}
 
@@ -32,6 +41,7 @@ public struct Settings: Sendable, Equatable {
         if d.object(forKey: Key.highlightLimit.rawValue) != nil { s.highlightLimit = d.integer(forKey: Key.highlightLimit.rawValue) }
         if d.object(forKey: Key.showFrontMatter.rawValue) != nil { s.showFrontMatter = d.bool(forKey: Key.showFrontMatter.rawValue) }
         if d.object(forKey: Key.allowRemoteImages.rawValue) != nil { s.allowRemoteImages = d.bool(forKey: Key.allowRemoteImages.rawValue) }
+        if let v = d.string(forKey: Key.rawHTML.rawValue).flatMap(RawHTMLMode.init) { s.rawHTML = v }
         return s
     }
 }

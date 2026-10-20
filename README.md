@@ -38,7 +38,15 @@ Both extensions are thin wrappers around `FormatRegistry` (`PeekKit/Sources/Peek
 | `Formats/*` | One module per format |
 | `PeekFormats` | `FormatRegistry` |
 
-Previews run JavaScript, so `HTMLPage` sets a Content-Security-Policy that blocks scripts and remote content.
+### Security
+
+Quick Look's data-based HTML previews run JavaScript, allow network access and ignore Content-Security-Policy (verified on macOS 26.6). Renderers therefore never emit untrusted markup unfiltered:
+
+- Source code and front matter are always escaped.
+- Raw HTML in Markdown is, depending on the `rawHTML` setting, either sanitized by an allowlist (`HTMLSanitizer`, default) or shown as text. Sanitizing removes scripts, styles, event handlers, embedded frames and remote resources.
+- Links keep only `http`, `https`, `mailto` and relative targets. Remote images load only if `allowRemoteImages` is enabled.
+
+The preview extension may read any file (`temporary-exception.files.absolute-path.read-only`) so Markdown can embed local images.
 
 ### Adding a format
 
