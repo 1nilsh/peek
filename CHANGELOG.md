@@ -1,0 +1,28 @@
+# Changelog
+
+## [0.1.1] - 2026-10-21
+
+### Added
+
+- Appearance setting: previews follow the system or are always light or dark.
+- Dark thumbnails setting.
+- Thumbnail text size setting: small, medium, large, very large.
+- Refresh… button under Appearance: clears the Quick Look thumbnail cache and relaunches Finder, so changed thumbnail settings apply to existing files. macOS asks once for permission to let Peek control Finder.
+
+### Changed
+
+- Thumbnail text is larger by default.
+- The settings app may send Apple Events to Finder, only to relaunch it.
+
+### Known limitations
+
+- Markdown, JSON and assembly (`.s`) files get macOS's own plain-text thumbnails. macOS uses its built-in thumbnailers for these types and they can't be switched off. Previews of these files are Peek's.
+
+## [0.1.0] - 2026-10-20
+
+First release.
+
+- Quick Look previews for Markdown and source code with syntax highlighting.
+- Finder thumbnails showing the start of the file as highlighted text.
+- Settings app with live preview: theme, font, line wrapping, line numbers, tab width, highlighting limit, Markdown front matter, raw HTML handling, remote images.
+- Signed with a Developer ID and notarized.

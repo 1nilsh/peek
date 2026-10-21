@@ -58,6 +58,7 @@ To build from source, see [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
 - [Development](docs/DEVELOPMENT.md): layout, build, architecture, security model, adding a format
 - [Testing](docs/TESTING.md): automated tests and manual Quick Look checklist
 - [Releasing](docs/RELEASING.md): signed and notarized DMG releases via GitHub Actions
+- [Changelog](CHANGELOG.md)
 
 ## License
 

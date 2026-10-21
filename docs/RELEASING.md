@@ -1,9 +1,9 @@
 # Releasing
 
-Pushing a tag `v<version>` runs `.github/workflows/release.yml`, which calls `scripts/release.sh <version>` (archive, Developer ID signing without provisioning profiles, DMG, notarization, stapling) and publishes `Peek-<version>.dmg` as a GitHub release.
+Pushing a tag `v<version>` runs `.github/workflows/release.yml`, which calls `scripts/release.sh <version>` (archive, Developer ID signing without provisioning profiles, DMG, notarization, stapling) and publishes `Peek-<version>.dmg` as a GitHub release. The release notes are the `## [<version>]` section of [CHANGELOG.md](../CHANGELOG.md); the workflow fails before building if it is missing.
 
 ```sh
-git tag v0.1.0 && git push origin v0.1.0
+git tag v0.1.1 && git push origin v0.1.1
 ```
 
 The script also runs locally: `NOTARY_PROFILE=peek-notary scripts/release.sh 0.1.0`. `SKIP_NOTARIZE=1 SIGN_IDENTITY="Apple Development"` tests packaging without a Developer ID certificate.

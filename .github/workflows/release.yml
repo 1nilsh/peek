@@ -1,5 +1,5 @@
-# Pushing a tag v<version> builds, notarizes and publishes Peek-<version>.dmg as a GitHub release.
-# Required repository secrets: see "Releasing" in README.md.
+# Pushing a tag v<version> builds, notarizes and publishes Peek-<version>.dmg as a GitHub release,
+# with the version's CHANGELOG.md section as notes. Required repository secrets: see docs/RELEASING.md.
 name: Release
 
 on:
@@ -31,6 +31,14 @@ jobs:
             if [[ -z "${!name}" ]]; then echo "::error::Secret $name is missing or empty"; missing=1; fi
           done
           exit $missing
+
+      - name: Extract release notes
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          awk -v heading="## [$version]" 'index($0, "## ") == 1 { p = index($0, heading) == 1; next } p' CHANGELOG.md > "$RUNNER_TEMP/notes.md"
+          if ! grep -q '[^[:space:]]' "$RUNNER_TEMP/notes.md"; then
+            echo "::error::CHANGELOG.md has no entry for $version"; exit 1
+          fi
 
       - name: Install XcodeGen
         run: brew install xcodegen
@@ -73,7 +81,7 @@ jobs:
         run: |
           version="${GITHUB_REF_NAME#v}"
           gh release create "$GITHUB_REF_NAME" "build/release/Peek-$version.dmg" \
-            --title "Peek $version" --generate-notes
+            --title "Peek $version" --notes-file "$RUNNER_TEMP/notes.md"
 
       - name: Clean up
         if: always()
