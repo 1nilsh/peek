@@ -33,6 +33,7 @@ struct SupportedTypesView: View {
         let format: String
         let description: String
         let extensions: String
+        let thumbnail: String
     }
 
     private let rows: [Row] = FormatRegistry.renderers.flatMap { renderer in
@@ -42,7 +43,8 @@ struct SupportedTypesView: View {
                 id: id,
                 format: renderer.displayName,
                 description: type?.localizedDescription ?? "Not declared on this Mac",
-                extensions: (type?.tags[.filenameExtension] ?? []).map { ".\($0)" }.joined(separator: " "))
+                extensions: (type?.tags[.filenameExtension] ?? []).map { ".\($0)" }.joined(separator: " "),
+                thumbnail: FormatRegistry.systemThumbnailTypes.contains(id) ? "macOS" : "Peek")
         }
     }
 
@@ -51,6 +53,7 @@ struct SupportedTypesView: View {
             TableColumn("Format", value: \.format).width(min: 80, ideal: 100)
             TableColumn("Kind", value: \.description)
             TableColumn("Extensions", value: \.extensions)
+            TableColumn("Thumbnail", value: \.thumbnail).width(min: 60, ideal: 70)
             TableColumn("Content Type", value: \.id)
         }
         .textSelection(.enabled)
@@ -61,7 +64,8 @@ struct CheckFileView: View {
     struct Result {
         let name: String
         let type: UTType?
-        let renderer: String?
+        let preview: String
+        let thumbnail: String
     }
 
     @State private var result: Result?
@@ -91,7 +95,8 @@ struct CheckFileView: View {
                         Text("macOS has no declared type for this extension, so Quick Look extensions can't claim it.")
                             .foregroundStyle(.secondary)
                     }
-                    LabeledContent("Peek", value: result.renderer.map { "Handled as \($0)" } ?? "Not handled")
+                    LabeledContent("Preview", value: result.preview)
+                    LabeledContent("Thumbnail", value: result.thumbnail)
                     if let type = result.type {
                         LabeledContent("Conforms to", value: type.supertypes.map(\.identifier).sorted().joined(separator: ", "))
                     }
@@ -109,6 +114,8 @@ struct CheckFileView: View {
         let accessing = url.startAccessingSecurityScopedResource()
         defer { if accessing { url.stopAccessingSecurityScopedResource() } }
         let type = try? url.resourceValues(forKeys: [.contentTypeKey]).contentType
-        result = Result(name: url.lastPathComponent, type: type, renderer: type.flatMap(FormatRegistry.renderer)?.displayName)
+        let handledBy = type.flatMap(FormatRegistry.renderer).map { "Peek (\($0.displayName))" } ?? "Not handled by Peek"
+        let systemThumbnail = type.map { FormatRegistry.systemThumbnailTypes.contains($0.identifier) } ?? false
+        result = Result(name: url.lastPathComponent, type: type, preview: handledBy, thumbnail: systemThumbnail ? "macOS" : handledBy)
     }
 }

@@ -37,6 +37,10 @@ import UniformTypeIdentifiers
         #expect(Self.importedTypes.isSubset(of: FormatRegistry.contentTypes))
     }
 
+    @Test func systemThumbnailTypesAreHandled() {
+        #expect(FormatRegistry.systemThumbnailTypes.isSubset(of: FormatRegistry.contentTypes))
+    }
+
     @Test func findsRendererByExactType() {
         #expect(FormatRegistry.renderer(for: .swiftSource) is SourceCodeRenderer)
         #expect(FormatRegistry.renderer(for: .assemblyLanguageSource) is SourceCodeRenderer)

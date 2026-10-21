@@ -2,6 +2,10 @@
 
 ## [0.1.2]
 
+### Changed
+
+- Check File shows separately whether Peek or macOS provides the preview and the thumbnail. Supported Types has a Thumbnail column. The live preview shows no thumbnail for Markdown, whose thumbnails come from macOS.
+
 ### Fixed
 
 - `.mdown`, `.mkd`, `.mkdn` and `.sc` files are previewed and get thumbnails. They were listed as supported but not handled.

@@ -75,6 +75,8 @@ struct PreviewPane: View {
                 let mime = attachment.contentType.preferredMIMEType ?? "application/octet-stream"
                 html = html.replacingOccurrences(of: "cid:\(id)", with: "data:\(mime);base64,\(attachment.data.base64EncodedString())")
             }
+            // Finder shows macOS's thumbnail for these, so Peek's would mislead.
+            if FormatRegistry.systemThumbnailTypes.contains(type.identifier) { return (html, nil) }
             let text = try renderer.thumbnail(of: url, context: context)
             let size = ThumbnailPage.contextSize(fitting: CGSize(width: 128, height: 128))
             let background = context.thumbnailPalette.background.nsColor
