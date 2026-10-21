@@ -9,7 +9,7 @@ Quick Look previews and Finder thumbnails for Markdown and source code on macOS 
 ## What it does
 
 - **Preview** (Space in Finder): source code is shown with syntax highlighting. Markdown is rendered, including tables, task lists, strikethrough, links, local images and highlighted code blocks.
-- **Thumbnails**: Finder icons show the start of the file as highlighted text on a white page.
+- **Thumbnails**: Finder icons show the start of the file as highlighted text on a page in the theme's light or dark colours.
 
 Highlighting uses [highlight.js](https://highlightjs.org) and Markdown parsing uses [swift-markdown](https://github.com/swiftlang/swift-markdown).
 
@@ -19,6 +19,7 @@ Highlighting uses [highlight.js](https://highlightjs.org) and Markdown parsing u
 |---|---|---|
 | Theme | Xcode, GitHub; each in light and dark | Xcode |
 | Appearance | System (follows macOS light/dark), light, dark | System |
+| Dark thumbnails | On / off; thumbnails don't follow the system appearance | Off |
 | Font, size | Any installed font, 8–28 pt | System monospaced, 12 pt |
 | Wrap long lines, line numbers | On / off | Wrap on, numbers off |
 | Tab width | 2, 4, 8 spaces | 4 |
@@ -26,8 +27,6 @@ Highlighting uses [highlight.js](https://highlightjs.org) and Markdown parsing u
 | Markdown front matter | Shown as a table / hidden | Shown |
 | Raw HTML in Markdown | Cleaned up (scripts, styles and remote content removed) / shown as text | Cleaned up |
 | Remote images in Markdown | Load / block | Block |
-
-Thumbnails always use the light variant of the theme.
 
 ## Supported formats
 

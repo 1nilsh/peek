@@ -67,6 +67,7 @@ import Testing
         s.tabWidth = 2
         s.rawHTML = .escape
         s.appearance = .dark
+        s.darkThumbnails = true
         s.save(to: d)
         #expect(Settings.load(from: d) == s)
     }
@@ -83,6 +84,15 @@ import Testing
         let text = (1...100).map(String.init).joined(separator: "\n")
         #expect(ThumbnailPage.head(of: text, maxLines: 3) == "1\n2\n3")
         #expect(ThumbnailPage.head(of: "a\nb", maxLines: 3) == "a\nb")
+    }
+}
+
+@Suite struct RenderContextTests {
+    @Test func thumbnailPaletteFollowsSetting() {
+        var s = Settings()
+        #expect(RenderContext(settings: s, contentType: nil).thumbnailPalette.background == Theme.xcode.light.background)
+        s.darkThumbnails = true
+        #expect(RenderContext(settings: s, contentType: nil).thumbnailPalette.background == Theme.xcode.dark.background)
     }
 }
 

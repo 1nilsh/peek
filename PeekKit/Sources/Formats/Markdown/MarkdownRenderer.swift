@@ -40,7 +40,7 @@ public struct MarkdownRenderer: FormatRenderer {
     public func thumbnail(of file: URL, context: RenderContext) throws -> NSAttributedString {
         let head = ThumbnailPage.head(of: try TextFile.read(file, limit: 8_000).text)
         let result = Highlighter.shared.highlight(head, language: "markdown", autoDetect: false)
-        return HighlightedHTML.attributedString(result.html, palette: context.theme.light, font: ThumbnailPage.font)
+        return HighlightedHTML.attributedString(result.html, palette: context.thumbnailPalette, font: ThumbnailPage.font)
     }
 
     static func html(_ frontMatter: FrontMatter) -> String {

@@ -77,7 +77,7 @@ struct PreviewPane: View {
             }
             let text = try renderer.thumbnail(of: url, context: context)
             let size = ThumbnailPage.contextSize(fitting: CGSize(width: 128, height: 128))
-            let background = context.theme.light.background.nsColor
+            let background = context.thumbnailPalette.background.nsColor
             let thumbnail = NSImage(size: size, flipped: false) { _ in
                 ThumbnailPage.draw(text, contextSize: size, background: background)
             }

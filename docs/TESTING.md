@@ -47,12 +47,12 @@ Preview with `qlmanage -p <file>` or Space in Finder. The extension logs each re
 
 ### Thumbnails
 
-Finder icon view on `Fixtures/`: highlighted text on a white page for Peek's types. Run `scripts/ql-reset.sh` after changes.
+Finder icon view on `Fixtures/`: highlighted text on a white page for Peek's types; dark page with Dark thumbnails on. Run `scripts/ql-reset.sh` after changes.
 
 ### Settings app
 
 - [ ] Setup: button opens Login Items & Extensions
-- [ ] Appearance: theme, appearance, font, size, wrap, line numbers update the live preview; Light/Dark switch (disabled unless Appearance is System); thumbnail bottom right; Restore Defaults
+- [ ] Appearance: theme, appearance, font, size, wrap, line numbers update the live preview; Dark thumbnails updates the thumbnail; Light/Dark switch (disabled unless Appearance is System); thumbnail bottom right; Restore Defaults
 - [ ] Supported Types: no "Not declared on this Mac" rows
 - [ ] Check File: `sample.s` → Source Code; a `.ts` file → MPEG-2 transport stream, not handled
 

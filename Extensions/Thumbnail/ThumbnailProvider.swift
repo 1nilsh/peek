@@ -17,7 +17,7 @@ final class ThumbnailProvider: QLThumbnailProvider {
             let context = RenderContext(settings: .load(), contentType: type)
             let text = try renderer.thumbnail(of: url, context: context)
             let size = ThumbnailPage.contextSize(fitting: request.maximumSize)
-            let background = context.theme.light.background.nsColor
+            let background = context.thumbnailPalette.background.nsColor
             handler(QLThumbnailReply(contextSize: size, currentContextDrawing: {
                 ThumbnailPage.draw(text, contextSize: size, background: background)
             }), nil)

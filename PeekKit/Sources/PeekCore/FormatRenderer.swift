@@ -26,6 +26,8 @@ public struct RenderContext: Sendable {
     }
 
     public var theme: Theme { Theme.named(settings.themeID) }
+
+    public var thumbnailPalette: Palette { settings.darkThumbnails ? theme.dark : theme.light }
 }
 
 public struct PreviewDocument: Sendable {

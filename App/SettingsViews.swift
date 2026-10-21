@@ -38,6 +38,7 @@ struct AppearanceSettings: View {
                     Text("Light").tag(Settings.Appearance.light)
                     Text("Dark").tag(Settings.Appearance.dark)
                 }
+                Toggle("Dark thumbnails", isOn: $store.settings.darkThumbnails)
                 Picker("Font", selection: $store.settings.fontFamily) {
                     Text("System Monospaced").tag("")
                     Divider()
@@ -49,7 +50,7 @@ struct AppearanceSettings: View {
                     }
                 }
             } footer: {
-                Text("System follows the light or dark appearance of macOS. Thumbnails always use the light variant.")
+                Text("System follows the light or dark appearance of macOS. Finder may keep showing thumbnails it made before a change.")
             }
             Section("Code") {
                 Toggle("Wrap long lines", isOn: $store.settings.wordWrap)
