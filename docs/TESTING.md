@@ -47,7 +47,7 @@ Preview with `qlmanage -p <file>` or Space in Finder. The extension logs each re
 
 ### Thumbnails
 
-Finder icon view on `Fixtures/`: highlighted text on a white page for Peek's types; dark page with Dark thumbnails on. Run `scripts/ql-reset.sh` after changes.
+Finder icon view on `Fixtures/`: highlighted text on a white page for Peek's types; dark page with Dark thumbnails on. `sample.md`, `sample.json` and `sample.s` show macOS's plain-text thumbnail (see [content type caveats](DEVELOPMENT.md#content-type-caveats)). Run `scripts/ql-reset.sh` after changes.
 
 ### Settings app
 

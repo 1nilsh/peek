@@ -66,3 +66,4 @@ The preview extension may read any file (`temporary-exception.files.absolute-pat
 - Some extensions are owned by system types and can't be claimed, e.g. `.ts` (MPEG-2 transport stream) and `.txt`.
 - Quick Look dispatches on exact content type identifiers, not conformance: every type must be listed.
 - An app exporting a type for an extension overrides Peek's imported declaration; if Peek doesn't list that identifier, the file isn't previewed by Peek.
+- Thumbnails for some types always come from macOS (verified on macOS 26.6): `public.json` from `/System/Library/QuickLook/Text.qlgenerator`, `net.daringfireball.markdown` and `public.assembly-source` from Apple's `TextThumbnailExtension`. Neither appears in System Settings or `pluginkit`, so they can't be disabled. Previews of these types are Peek's.
