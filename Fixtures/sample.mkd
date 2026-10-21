@@ -1,0 +1,6 @@
+# Sample
+
+Markdown with the **`.mkd`** extension.
+
+- one
+- two

@@ -57,7 +57,7 @@ The preview extension may read any file (`temporary-exception.files.absolute-pat
 
 1. Create `PeekKit/Sources/Formats/<Name>/` with a type conforming to `FormatRenderer`; add the target to `Package.swift` and as a dependency of `PeekFormats`.
 2. Append the renderer to `FormatRegistry.renderers`.
-3. List its content types under `QLSupportedContentTypes` in `project.yml`. Types macOS doesn't declare go into `UTImportedTypeDeclarations` of the app target.
+3. List its content types under `QLSupportedContentTypes` in `project.yml`. Types macOS doesn't declare go into `UTImportedTypeDeclarations` of the app target; so do `bz.nils.peek.*` subtypes for extensions missing from a type macOS does declare.
 4. `swift test` fails if the registry and `project.yml` disagree.
 
 ### Content type caveats
@@ -65,5 +65,6 @@ The preview extension may read any file (`temporary-exception.files.absolute-pat
 - Supported types are fixed at build time; Quick Look can't be extended at runtime.
 - Some extensions are owned by system types and can't be claimed, e.g. `.ts` (MPEG-2 transport stream) and `.txt`.
 - Quick Look dispatches on exact content type identifiers, not conformance: every type must be listed.
-- An app exporting a type for an extension overrides Peek's imported declaration; if Peek doesn't list that identifier, the file isn't previewed by Peek.
-- Thumbnails for some types always come from macOS (verified on macOS 26.6): `public.json` from `/System/Library/QuickLook/Text.qlgenerator`, `net.daringfireball.markdown` and `public.assembly-source` from Apple's `TextThumbnailExtension`. Neither appears in System Settings or `pluginkit`, so they can't be disabled. Previews of these types are Peek's.
+- An imported declaration can't add extensions to a type that is already declared. `net.daringfireball.markdown` (macOS: `md`, `markdown`) and `org.scala-lang.scala-source` (`scala`) are, so `.mdown`, `.mkd`, `.mkdn` belong to `bz.nils.peek.markdown` and `.sc` to `bz.nils.peek.source.scala`, each conforming to the original type.
+- An app exporting a type for an extension overrides Peek's imported declaration; if Peek doesn't list that identifier, the file isn't previewed by Peek. Example: Adobe Creative Cloud declares `com.adobe.edn`, which takes `.edn` from `bz.nils.peek.source.clojure`.
+- Thumbnails for some types always come from macOS (verified on macOS 26.6): `public.json` from `/System/Library/QuickLook/Text.qlgenerator`, `net.daringfireball.markdown` and `public.assembly-source` from Apple's `TextThumbnailExtension`. Neither appears in System Settings or `pluginkit`, so they can't be disabled. Previews of these types are Peek's. `bz.nils.peek.markdown` files get Peek's thumbnail.

@@ -11,7 +11,7 @@ public struct MarkdownRenderer: FormatRenderer {
 
     public var displayName: String { "Markdown" }
 
-    public var contentTypes: [String] { ["net.daringfireball.markdown"] }
+    public var contentTypes: [String] { ["net.daringfireball.markdown", "bz.nils.peek.markdown"] }
 
     public func preview(of file: URL, context: RenderContext) throws -> PreviewDocument {
         let text = try TextFile.read(file, limit: Self.sizeLimit)

@@ -53,9 +53,11 @@ targets:
         PeekAppGroup: $(PEEK_APP_GROUP)
         NSAppleEventsUsageDescription: Peek relaunches Finder so it shows refreshed thumbnails.
         # Imported: an app exporting the same identifier takes precedence. Third-party identifiers are imported
-        # so they exist without their owning app; bz.nils.peek.source.* replace dyn.* types.
+        # so they exist without their owning app; bz.nils.peek.* replace dyn.* types. An existing declaration
+        # of a type can't be given more extensions, so extra ones get a bz.nils.peek.* subtype.
         UTImportedTypeDeclarations:
-          - {UTTypeIdentifier: net.daringfireball.markdown, UTTypeDescription: Markdown document, UTTypeConformsTo: [public.plain-text], UTTypeTagSpecification: {public.filename-extension: [md, markdown, mdown, mkd, mkdn], public.mime-type: [text/markdown]}}
+          - {UTTypeIdentifier: net.daringfireball.markdown, UTTypeDescription: Markdown document, UTTypeConformsTo: [public.plain-text], UTTypeTagSpecification: {public.filename-extension: [md, markdown], public.mime-type: [text/markdown]}}
+          - {UTTypeIdentifier: bz.nils.peek.markdown, UTTypeDescription: Markdown document, UTTypeConformsTo: [net.daringfireball.markdown], UTTypeTagSpecification: {public.filename-extension: [mdown, mkd, mkdn]}}
           - {UTTypeIdentifier: com.microsoft.typescript, UTTypeDescription: TypeScript JSX source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [tsx]}}
           - {UTTypeIdentifier: public.toml, UTTypeDescription: TOML document, UTTypeConformsTo: [public.plain-text], UTTypeTagSpecification: {public.filename-extension: [toml]}}
           - {UTTypeIdentifier: com.microsoft.ini, UTTypeDescription: INI configuration, UTTypeConformsTo: [public.plain-text], UTTypeTagSpecification: {public.filename-extension: [ini]}}
@@ -65,10 +67,11 @@ targets:
           - {UTTypeIdentifier: org.rust-lang.rust-script, UTTypeDescription: Rust source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [rs]}}
           - {UTTypeIdentifier: org.lua.lua-source, UTTypeDescription: Lua source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [lua]}}
           - {UTTypeIdentifier: org.iso.sql, UTTypeDescription: SQL source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [sql]}}
-          - {UTTypeIdentifier: org.scala-lang.scala-source, UTTypeDescription: Scala source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [scala, sc]}}
+          - {UTTypeIdentifier: org.scala-lang.scala-source, UTTypeDescription: Scala source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [scala]}}
           - {UTTypeIdentifier: dev.dart.dart-script, UTTypeDescription: Dart source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [dart]}}
           - {UTTypeIdentifier: org.haskell.haskell-script, UTTypeDescription: Haskell source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [hs, lhs]}}
           - {UTTypeIdentifier: public.protobuf-source, UTTypeDescription: Protocol Buffers source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [proto]}}
+          - {UTTypeIdentifier: bz.nils.peek.source.scala, UTTypeDescription: Scala script, UTTypeConformsTo: [org.scala-lang.scala-source], UTTypeTagSpecification: {public.filename-extension: [sc]}}
           - {UTTypeIdentifier: bz.nils.peek.source.javascript, UTTypeDescription: JavaScript source, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [jsx, cjs]}}
           - {UTTypeIdentifier: bz.nils.peek.source.jsonc, UTTypeDescription: JSON with comments, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [jsonc, json5]}}
           - {UTTypeIdentifier: bz.nils.peek.source.fish, UTTypeDescription: Fish script, UTTypeConformsTo: [public.source-code], UTTypeTagSpecification: {public.filename-extension: [fish]}}
@@ -127,6 +130,7 @@ targets:
             # Must match FormatRegistry; shared with PeekThumbnail via the YAML anchor.
             QLSupportedContentTypes: &contentTypes
               - net.daringfireball.markdown
+              - bz.nils.peek.markdown
               - public.source-code
               - public.assembly-source
               - public.csh-script
@@ -169,6 +173,7 @@ targets:
               - dev.dart.dart-script
               - org.haskell.haskell-script
               - public.protobuf-source
+              - bz.nils.peek.source.scala
               - bz.nils.peek.source.javascript
               - bz.nils.peek.source.jsonc
               - bz.nils.peek.source.fish

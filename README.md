@@ -9,7 +9,7 @@ Quick Look previews for Markdown and source code, and Finder thumbnails for sour
 ## What it does
 
 - **Preview** (Space in Finder): source code is shown with syntax highlighting. Markdown is rendered, including tables, task lists, strikethrough, links, local images and highlighted code blocks.
-- **Thumbnails**: Finder icons show the start of the file as highlighted text on a page in the theme's light or dark colours. Markdown (`.md`), JSON and assembly (`.s`) files get macOS's own plain-text thumbnails instead: macOS uses its built-in thumbnailers for these types, and neither Peek nor the user can switch them off.
+- **Thumbnails**: Finder icons show the start of the file as highlighted text on a page in the theme's light or dark colours. Markdown (`.md`, `.markdown`), JSON and assembly (`.s`) files get macOS's own plain-text thumbnails instead: macOS uses its built-in thumbnailers for these types, and neither Peek nor the user can switch them off.
 
 Highlighting uses [highlight.js](https://highlightjs.org) and Markdown parsing uses [swift-markdown](https://github.com/swiftlang/swift-markdown).
 

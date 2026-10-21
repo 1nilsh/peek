@@ -30,7 +30,7 @@ Preview with `qlmanage -p <file>` or Space in Finder. The extension logs each re
 |---|---|
 | `Fixtures/samples/sample.swift`, `.py`; `Fixtures/sample.json`, `.yaml`, `.s` | Peek: highlighted, follows light/dark (Appearance: System) |
 | `Fixtures/sample.go` | Peek (type imported by Peek) |
-| `Fixtures/sample.vue` | Peek (type declared by Peek) |
+| `Fixtures/sample.vue`, `Fixtures/sample.sc` | Peek (type declared by Peek) |
 | `build/fixtures/large.swift` | Peek, fast, ends with "Showing … of 1 MB." |
 | `Fixtures/sample.txt`, `Fixtures/sample.plist`, any `.svg` | Apple's preview, not Peek |
 
@@ -43,11 +43,13 @@ Preview with `qlmanage -p <file>` or Space in Finder. The extension logs each re
 - [ ] Task list checkboxes, aligned table, highlighted Swift block
 - [ ] Teal "Peek fixture" image
 
+`Fixtures/sample.mkd`: rendered by Peek (type declared by Peek).
+
 `Fixtures/security/images-and-links.md` and `Fixtures/security/raw-html.md`: each item states its expected result.
 
 ### Thumbnails
 
-Finder icon view on `Fixtures/`: highlighted text on a white page for Peek's types; dark page with Dark thumbnails on. `sample.md`, `sample.json` and `sample.s` show macOS's plain-text thumbnail (see [content type caveats](DEVELOPMENT.md#content-type-caveats)). Run `scripts/ql-reset.sh` after changes.
+Finder icon view on `Fixtures/`: highlighted text on a white page for Peek's types; dark page with Dark thumbnails on. `sample.md`, `sample.json` and `sample.s` show macOS's plain-text thumbnail, `sample.mkd` Peek's (see [content type caveats](DEVELOPMENT.md#content-type-caveats)). Run `scripts/ql-reset.sh` after changes.
 
 ### Settings app
 

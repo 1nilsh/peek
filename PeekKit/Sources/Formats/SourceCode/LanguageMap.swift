@@ -45,6 +45,7 @@ enum LanguageMap {
         "dev.dart.dart-script": "dart",
         "org.haskell.haskell-script": "haskell",
         "public.protobuf-source": "protobuf",
+        "bz.nils.peek.source.scala": "scala",
         "bz.nils.peek.source.javascript": "javascript",
         "bz.nils.peek.source.jsonc": "json",
         "bz.nils.peek.source.fish": "bash",

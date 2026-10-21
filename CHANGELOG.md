@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.1.2]
+
+### Fixed
+
+- `.mdown`, `.mkd`, `.mkdn` and `.sc` files are previewed and get thumbnails. They were listed as supported but not handled.
+
+### Known limitations
+
+- `.edn` files aren't handled on Macs with Adobe Creative Cloud installed, which declares its own type for `.edn`.
+
 ## [0.1.1] - 2026-10-21
 
 ### Added
