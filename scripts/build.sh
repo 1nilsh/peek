@@ -7,5 +7,5 @@ if [[ ! -f Config/Signing.local.xcconfig ]]; then
   exit 1
 fi
 xcodegen generate --quiet
-xcodebuild -project Peek.xcodeproj -scheme Peek -configuration Debug -derivedDataPath build -quiet build
+xcodebuild -project Peek.xcodeproj -scheme Peek -configuration Debug -derivedDataPath build -destination "platform=macOS,arch=$(uname -m)" -quiet build
 echo "Built: build/Build/Products/Debug/Peek.app"
