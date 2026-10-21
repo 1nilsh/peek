@@ -33,6 +33,11 @@ struct AppearanceSettings: View {
                 Picker("Theme", selection: $store.settings.themeID) {
                     ForEach(Theme.all) { Text($0.name).tag($0.id) }
                 }
+                Picker("Appearance", selection: $store.settings.appearance) {
+                    Text("System").tag(Settings.Appearance.system)
+                    Text("Light").tag(Settings.Appearance.light)
+                    Text("Dark").tag(Settings.Appearance.dark)
+                }
                 Picker("Font", selection: $store.settings.fontFamily) {
                     Text("System Monospaced").tag("")
                     Divider()
@@ -44,7 +49,7 @@ struct AppearanceSettings: View {
                     }
                 }
             } footer: {
-                Text("Colors follow the system's light or dark appearance. Thumbnails always use the light variant.")
+                Text("System follows the light or dark appearance of macOS. Thumbnails always use the light variant.")
             }
             Section("Code") {
                 Toggle("Wrap long lines", isOn: $store.settings.wordWrap)

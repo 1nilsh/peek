@@ -66,6 +66,7 @@ import Testing
         s.lineNumbers = true
         s.tabWidth = 2
         s.rawHTML = .escape
+        s.appearance = .dark
         s.save(to: d)
         #expect(Settings.load(from: d) == s)
     }
@@ -90,5 +91,21 @@ import Testing
         let html = HTMLPage.render(body: "", context: RenderContext(settings: Settings(), contentType: nil))
         #expect(html.contains("default-src 'none'"))
         #expect(html.contains("img-src cid: data:\""))
+    }
+
+    @Test func followsSystemAppearanceByDefault() {
+        let html = HTMLPage.render(body: "", context: RenderContext(settings: Settings(), contentType: nil))
+        #expect(html.contains("prefers-color-scheme: dark"))
+        #expect(html.contains("color-scheme: light dark;"))
+    }
+
+    @Test func fixedAppearanceUsesOnlyThatPalette() {
+        var s = Settings()
+        s.appearance = .dark
+        let html = HTMLPage.render(body: "", context: RenderContext(settings: s, contentType: nil))
+        #expect(!html.contains("prefers-color-scheme"))
+        #expect(html.contains("color-scheme: dark;"))
+        #expect(html.contains("--bg: \(Theme.xcode.dark.background.css)"))
+        #expect(!html.contains("--bg: \(Theme.xcode.light.background.css)"))
     }
 }

@@ -11,8 +11,8 @@ public enum HTMLPage {
             <html><head><meta charset="utf-8">
             <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src \(imgSrc)">
             <style>
-            \(context.theme.cssVariables)
-            :root { color-scheme: light dark; --mono: \(mono); --code-size: \(s.fontSize)px; }
+            \(context.theme.cssVariables(for: s.appearance))
+            :root { color-scheme: \(s.appearance.cssColorScheme); --mono: \(mono); --code-size: \(s.fontSize)px; }
             html { background: var(--bg); color: var(--fg); }
             body { margin: 0; padding: 16px 20px; font: 14px/1.5 -apple-system, sans-serif; }
             pre, code { font-family: var(--mono); font-size: var(--code-size); tab-size: \(s.tabWidth); }

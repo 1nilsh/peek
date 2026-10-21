@@ -26,6 +26,8 @@ struct PreviewPane: View {
 
     var body: some View {
         let rendered = render()
+        // A fixed appearance setting overrides the simulated system appearance.
+        let forced = store.settings.appearance.colorScheme
         VStack(spacing: 0) {
             HStack {
                 Picker("Sample", selection: $sample) {
@@ -33,18 +35,19 @@ struct PreviewPane: View {
                 }
                 .fixedSize()
                 Spacer()
-                Picker("Appearance", selection: $appearance) {
+                Picker("Appearance", selection: forced == nil ? $appearance : .constant(forced)) {
                     Text("System").tag(ColorScheme?.none)
                     Text("Light").tag(ColorScheme?.some(.light))
                     Text("Dark").tag(ColorScheme?.some(.dark))
                 }
                 .pickerStyle(.segmented)
                 .fixedSize()
+                .disabled(forced != nil)
             }
             .labelsHidden()
             .padding(8)
             Divider()
-            HTMLView(html: rendered.html, appearance: appearance)
+            HTMLView(html: rendered.html, appearance: forced ?? appearance)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .overlay(alignment: .bottomTrailing) {
                     if let thumbnail = rendered.thumbnail {
@@ -81,6 +84,16 @@ struct PreviewPane: View {
             return (html, thumbnail)
         } catch {
             return ("<p>\(error.localizedDescription.htmlEscaped)</p>", nil)
+        }
+    }
+}
+
+private extension PeekCore.Settings.Appearance {
+    var colorScheme: ColorScheme? {
+        switch self {
+        case .system: nil
+        case .light: .light
+        case .dark: .dark
         }
     }
 }

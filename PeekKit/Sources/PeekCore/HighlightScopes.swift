@@ -36,7 +36,7 @@ public enum HighlightScopes {
         }
     }
 
-    /// Rules referencing the `--<role>` variables from `Theme.cssVariables`.
+    /// Rules referencing the `--<role>` variables from `Theme.cssVariables(for:)`.
     public static let css: String = {
         let baseRules = base.sorted { $0.key < $1.key }.map { ".hljs-\($0.key) { color: var(--\($0.value.rawValue)); }" }
         // Two-class selectors so sub-scopes beat their base scope.

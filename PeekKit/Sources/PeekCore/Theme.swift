@@ -67,13 +67,17 @@ public struct Theme: Sendable, Identifiable {
         ])
     )
 
-    /// CSS custom properties `--bg`, `--fg`, `--secondary`, `--<role>` for light and dark appearance.
-    public var cssVariables: String {
+    /// CSS custom properties `--bg`, `--fg`, `--secondary`, `--<role>`; for `.system` both variants via media query.
+    public func cssVariables(for appearance: Settings.Appearance) -> String {
         func vars(_ p: Palette) -> String {
             (["--bg: \(p.background.css)", "--fg: \(p.foreground.css)", "--secondary: \(p.secondary.css)"]
                 + TokenRole.allCases.compactMap { r in p.tokens[r].map { "--\(r.rawValue): \($0.css)" } })
                 .joined(separator: "; ")
         }
-        return ":root { \(vars(light)); }\n@media (prefers-color-scheme: dark) { :root { \(vars(dark)); } }"
+        switch appearance {
+        case .system: return ":root { \(vars(light)); }\n@media (prefers-color-scheme: dark) { :root { \(vars(dark)); } }"
+        case .light: return ":root { \(vars(light)); }"
+        case .dark: return ":root { \(vars(dark)); }"
+        }
     }
 }

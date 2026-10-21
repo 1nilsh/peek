@@ -28,7 +28,7 @@ Preview with `qlmanage -p <file>` or Space in Finder. The extension logs each re
 
 | File | Expected |
 |---|---|
-| `Fixtures/samples/sample.swift`, `.py`; `Fixtures/sample.json`, `.yaml`, `.s` | Peek: highlighted, follows light/dark |
+| `Fixtures/samples/sample.swift`, `.py`; `Fixtures/sample.json`, `.yaml`, `.s` | Peek: highlighted, follows light/dark (Appearance: System) |
 | `Fixtures/sample.go` | Peek (type imported by Peek) |
 | `Fixtures/sample.vue` | Peek (type declared by Peek) |
 | `build/fixtures/large.swift` | Peek, fast, ends with "Showing … of 1 MB." |
@@ -52,12 +52,13 @@ Finder icon view on `Fixtures/`: highlighted text on a white page for Peek's typ
 ### Settings app
 
 - [ ] Setup: button opens Login Items & Extensions
-- [ ] Appearance: theme, font, size, wrap, line numbers update the live preview; Light/Dark switch; thumbnail bottom right; Restore Defaults
+- [ ] Appearance: theme, appearance, font, size, wrap, line numbers update the live preview; Light/Dark switch (disabled unless Appearance is System); thumbnail bottom right; Restore Defaults
 - [ ] Supported Types: no "Not declared on this Mac" rows
 - [ ] Check File: `sample.s` → Source Code; a `.ts` file → MPEG-2 transport stream, not handled
 
 ### Settings reach Quick Look
 
 - [ ] Theme GitHub → `sample.swift` preview changes colours
+- [ ] Appearance Dark with macOS in light mode → preview dark; Light with macOS in dark mode → preview light; reset to System
 - [ ] Line numbers on → numbered, normal line spacing; copied text has no numbers
 - [ ] Raw HTML "Show as text" → `raw-html.md` shows HTML literally; reset to "Clean up"
