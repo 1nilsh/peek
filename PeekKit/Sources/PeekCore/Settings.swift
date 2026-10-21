@@ -21,10 +21,10 @@ public struct Settings: Sendable, Equatable {
         /// On `ThumbnailPage.size`, which Finder scales down to icon size.
         public var points: Double {
             switch self {
-            case .small: 18
-            case .medium: 24
-            case .large: 32
-            case .veryLarge: 60
+            case .small: 20
+            case .medium: 26
+            case .large: 40
+            case .veryLarge: 72
             }
         }
     }
