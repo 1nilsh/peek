@@ -5,6 +5,7 @@
 ### Fixed
 
 - `.mdown`, `.mkd`, `.mkdn` and `.sc` files are previewed and get thumbnails. They were listed as supported but not handled.
+- Check File: Choose File… opens a file panel. The settings app may now read files you pick there.
 
 ### Known limitations
 

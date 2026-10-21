@@ -41,6 +41,7 @@ Finder keeps thumbnails it has already made until the file changes. After changi
 - All parts of Peek are sandboxed. The preview extension may read any file (read-only), so that Markdown files can show the local images they reference.
 - The settings app has the outgoing network entitlement only because its live preview (`WKWebView`) doesn't start in a sandboxed app without it.
 - The settings app may send Apple Events to Finder, only to relaunch it when you refresh thumbnails. macOS asks for permission the first time.
+- The settings app may read a file you pick under Check File, to show its type.
 - Quick Look previews run scripts and may load remote content. Peek therefore escapes source code, cleans up or escapes HTML in Markdown, and blocks remote images unless you enable them. Details: [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md#security).
 
 ## Install

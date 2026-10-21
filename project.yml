@@ -98,6 +98,8 @@ targets:
         # Quit Finder after resetting the thumbnail cache; Finder keeps thumbnails in memory.
         com.apple.security.automation.apple-events: true
         com.apple.security.temporary-exception.apple-events: [com.apple.finder]
+        # Check File's open panel; without it the panel doesn't appear.
+        com.apple.security.files.user-selected.read-only: true
     dependencies:
       - target: PeekPreview
       - target: PeekThumbnail
