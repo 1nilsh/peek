@@ -4,7 +4,6 @@ import AppKit
 public enum ThumbnailPage {
     public static let size = CGSize(width: 600, height: 776)
     public static let inset: CGFloat = 28
-    public static var font: NSFont { .monospacedSystemFont(ofSize: 15, weight: .regular) }
 
     public static func contextSize(fitting maximum: CGSize) -> CGSize {
         let scale = min(maximum.width / size.width, maximum.height / size.height)

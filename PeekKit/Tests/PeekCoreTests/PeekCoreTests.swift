@@ -68,6 +68,7 @@ import Testing
         s.rawHTML = .escape
         s.appearance = .dark
         s.darkThumbnails = true
+        s.thumbnailTextSize = .veryLarge
         s.save(to: d)
         #expect(Settings.load(from: d) == s)
     }
@@ -93,6 +94,13 @@ import Testing
         #expect(RenderContext(settings: s, contentType: nil).thumbnailPalette.background == Theme.xcode.light.background)
         s.darkThumbnails = true
         #expect(RenderContext(settings: s, contentType: nil).thumbnailPalette.background == Theme.xcode.dark.background)
+    }
+
+    @Test func thumbnailFontFollowsSetting() {
+        var s = Settings()
+        s.thumbnailTextSize = .small
+        // Double(): #expect doesn't bridge CGFloat and Double, so equal values compare unequal.
+        #expect(Double(RenderContext(settings: s, contentType: nil).thumbnailFont.pointSize) == Settings.ThumbnailTextSize.small.points)
     }
 }
 

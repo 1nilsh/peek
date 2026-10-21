@@ -55,6 +55,18 @@ struct AppearanceSettings: View {
             }
             Section {
                 Toggle("Dark thumbnails", isOn: $store.settings.darkThumbnails)
+                LabeledContent("Thumbnail text") {
+                    let sizes = Settings.ThumbnailTextSize.allCases
+                    HStack {
+                        Slider(
+                            value: Binding(
+                                get: { Double(sizes.firstIndex(of: store.settings.thumbnailTextSize) ?? 0) },
+                                set: { store.settings.thumbnailTextSize = sizes[Int($0.rounded())] }),
+                            in: 0...Double(sizes.count - 1), step: 1)
+                        Text(store.settings.thumbnailTextSize.title)
+                            .frame(width: 70, alignment: .leading)
+                    }
+                }
                 LabeledContent("Finder thumbnails") {
                     Button("Refresh…") { confirmingRefresh = true }
                 }
@@ -140,6 +152,17 @@ struct SourceCodeSettings: View {
             } footer: {
                 Text("Larger files are cut off at this size. Highlighting takes roughly 0.2 s per 100 KB.")
             }
+        }
+    }
+}
+
+private extension PeekCore.Settings.ThumbnailTextSize {
+    var title: String {
+        switch self {
+        case .small: "Small"
+        case .medium: "Medium"
+        case .large: "Large"
+        case .veryLarge: "Very large"
         }
     }
 }

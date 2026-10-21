@@ -3,7 +3,7 @@ import Foundation
 /// User settings, stored as individual keys in the App Group defaults so SwiftUI can bind them via `@AppStorage`.
 public struct Settings: Sendable, Equatable {
     public enum Key: String, CaseIterable, Sendable {
-        case themeID, appearance, darkThumbnails, fontFamily, fontSize, wordWrap, lineNumbers, tabWidth, highlightLimit, showFrontMatter, allowRemoteImages, rawHTML
+        case themeID, appearance, darkThumbnails, thumbnailTextSize, fontFamily, fontSize, wordWrap, lineNumbers, tabWidth, highlightLimit, showFrontMatter, allowRemoteImages, rawHTML
     }
 
     /// Which theme variant previews use.
@@ -13,6 +13,20 @@ public struct Settings: Sendable, Equatable {
 
         /// Value of the CSS `color-scheme` property.
         public var cssColorScheme: String { self == .system ? "light dark" : rawValue }
+    }
+
+    public enum ThumbnailTextSize: String, CaseIterable, Sendable {
+        case small, medium, large, veryLarge
+
+        /// On `ThumbnailPage.size`, which Finder scales down to icon size.
+        public var points: Double {
+            switch self {
+            case .small: 18
+            case .medium: 24
+            case .large: 32
+            case .veryLarge: 60
+            }
+        }
     }
 
     /// How raw HTML embedded in Markdown is rendered.
@@ -27,6 +41,7 @@ public struct Settings: Sendable, Equatable {
     public var appearance = Appearance.system
     /// No system option: Finder caches thumbnails and doesn't redraw them when the system appearance changes.
     public var darkThumbnails = false
+    public var thumbnailTextSize = ThumbnailTextSize.large
     /// Empty means the system monospaced font.
     public var fontFamily = ""
     public var fontSize = 12.0
@@ -47,6 +62,7 @@ public struct Settings: Sendable, Equatable {
         if let v = d.string(forKey: Key.themeID.rawValue) { s.themeID = v }
         if let v = d.string(forKey: Key.appearance.rawValue).flatMap(Appearance.init) { s.appearance = v }
         if d.object(forKey: Key.darkThumbnails.rawValue) != nil { s.darkThumbnails = d.bool(forKey: Key.darkThumbnails.rawValue) }
+        if let v = d.string(forKey: Key.thumbnailTextSize.rawValue).flatMap(ThumbnailTextSize.init) { s.thumbnailTextSize = v }
         if let v = d.string(forKey: Key.fontFamily.rawValue) { s.fontFamily = v }
         if d.object(forKey: Key.fontSize.rawValue) != nil { s.fontSize = d.double(forKey: Key.fontSize.rawValue) }
         if d.object(forKey: Key.wordWrap.rawValue) != nil { s.wordWrap = d.bool(forKey: Key.wordWrap.rawValue) }
@@ -64,6 +80,7 @@ public struct Settings: Sendable, Equatable {
         d.set(themeID, forKey: Key.themeID.rawValue)
         d.set(appearance.rawValue, forKey: Key.appearance.rawValue)
         d.set(darkThumbnails, forKey: Key.darkThumbnails.rawValue)
+        d.set(thumbnailTextSize.rawValue, forKey: Key.thumbnailTextSize.rawValue)
         d.set(fontFamily, forKey: Key.fontFamily.rawValue)
         d.set(fontSize, forKey: Key.fontSize.rawValue)
         d.set(wordWrap, forKey: Key.wordWrap.rawValue)

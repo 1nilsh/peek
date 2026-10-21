@@ -20,6 +20,7 @@ Highlighting uses [highlight.js](https://highlightjs.org) and Markdown parsing u
 | Theme | Xcode, GitHub; each in light and dark | Xcode |
 | Appearance | System (follows macOS light/dark), light, dark | System |
 | Dark thumbnails | On / off; thumbnails don't follow the system appearance | Off |
+| Thumbnail text | Small, medium, large, very large | Large |
 | Font, size | Any installed font, 8–28 pt | System monospaced, 12 pt |
 | Wrap long lines, line numbers | On / off | Wrap on, numbers off |
 | Tab width | 2, 4, 8 spaces | 4 |

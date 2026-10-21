@@ -24,6 +24,6 @@ public struct SourceCodeRenderer: FormatRenderer {
         let head = ThumbnailPage.head(of: try TextFile.read(file, limit: 8_000).text)
         let language = LanguageMap.language(for: context.contentType, fileExtension: file.pathExtension)
         let result = Highlighter.shared.highlight(head, language: language)
-        return HighlightedHTML.attributedString(result.html, palette: context.thumbnailPalette, font: ThumbnailPage.font)
+        return HighlightedHTML.attributedString(result.html, palette: context.thumbnailPalette, font: context.thumbnailFont)
     }
 }
