@@ -2,104 +2,59 @@
 
 Quick Look previews and Finder thumbnails for Markdown and source code on macOS 26.
 
+<p align="center">
+  <img src="docs/assets/peek_appearance.png" alt="Peek settings window with a live preview of a Python file in dark mode" width="800">
+</p>
+
+## What it does
+
+- **Preview** (Space in Finder): source code is shown with syntax highlighting. Markdown is rendered, including tables, task lists, strikethrough, links, local images and highlighted code blocks.
+- **Thumbnails**: Finder icons show the start of the file as highlighted text on a white page.
+
+Highlighting uses [highlight.js](https://highlightjs.org) and Markdown parsing uses [swift-markdown](https://github.com/swiftlang/swift-markdown).
+
+## Settings
+
+| Setting | Options | Default |
+|---|---|---|
+| Theme | Xcode, GitHub; each in light and dark, following the system appearance | Xcode |
+| Font, size | Any installed font, 8–28 pt | System monospaced, 12 pt |
+| Wrap long lines, line numbers | On / off | Wrap on, numbers off |
+| Tab width | 2, 4, 8 spaces | 4 |
+| Highlight up to | 100 KB – 1 MB; larger files are cut off at this size | 200 KB |
+| Markdown front matter | Shown as a table / hidden | Shown |
+| Raw HTML in Markdown | Cleaned up (scripts, styles and remote content removed) / shown as text | Cleaned up |
+| Remote images in Markdown | Load / block | Block |
+
+Thumbnails always use the light variant of the theme.
+
+## Supported formats
+
+`.bash` `.c` `.c++` `.cc` `.cjs` `.clj` `.cljc` `.cljs` `.cmake` `.containerfile` `.cp` `.cpp` `.cs` `.csh` `.css` `.cxx` `.dart` `.diff` `.dockerfile` `.edn` `.erl` `.ex` `.exs` `.fish` `.gmk` `.go` `.gql` `.gradle` `.graphql` `.groovy` `.h` `.h++` `.hh` `.hp` `.hpp` `.hrl` `.hs` `.hxx` `.ini` `.inl` `.ipp` `.jav` `.java` `.javascript` `.js` `.jscript` `.json` `.json5` `.jsonc` `.jsx` `.ksh` `.kt` `.kts` `.less` `.lhs` `.lua` `.m` `.mak` `.make` `.markdown` `.md` `.mdown` `.mjs` `.mk` `.mkd` `.mkdn` `.ml` `.mli` `.mm` `.nix` `.patch` `.ph3` `.ph4` `.php` `.php3` `.php4` `.phtml` `.pl` `.pm` `.proto` `.py` `.rb` `.rbw` `.rc` `.rs` `.s` `.sc` `.scala` `.scss` `.sh` `.sql` `.svelte` `.swift` `.swiftinterface` `.tcsh` `.toml` `.tsx` `.vue` `.xml` `.yaml` `.yml` `.zsh`
+
+## Privacy and permissions
+
+- Peek makes no network requests and collects no data.
+- All parts of Peek are sandboxed. The preview extension may read any file (read-only), so that Markdown files can show the local images they reference.
+- The settings app has the outgoing network entitlement only because its live preview (`WKWebView`) doesn't start in a sandboxed app without it.
+- Quick Look previews run scripts and may load remote content. Peek therefore escapes source code, cleans up or escapes HTML in Markdown, and blocks remote images unless you enable them. Details: [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md#security).
+
 ## Install
 
-1. Download `Peek-<version>.dmg` from [Releases](https://github.com/1nilsh/peek/releases) and drag Peek into Applications.
+Requires macOS 26.
+
+1. Download `Peek-<version>.dmg` from [Releases](https://github.com/1nilsh/peek/releases) and drag Peek into Applications. Releases are signed with a Developer ID and notarized by Apple.
 2. Open Peek once so macOS registers its extensions.
 3. Enable Peek under Quick Look in System Settings → General → Login Items & Extensions.
 
-## Layout
+To build from source, see [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
 
-| Path | Contents |
-|---|---|
-| `project.yml` | XcodeGen spec; generates `Peek.xcodeproj` (not checked in) |
-| `App/` | Host app: setup help, settings with live preview, supported types, file checker |
-| `Extensions/Preview/` | Quick Look preview extension (data-based, returns HTML) |
-| `Extensions/Thumbnail/` | Quick Look thumbnail extension (draws styled text) |
-| `PeekKit/` | Swift package with all rendering logic |
-| `Fixtures/` | Sample files for tests; `Fixtures/samples/` is also bundled for the app's live preview |
-| `docs/` | Testing checklist |
-| `scripts/` | Build and Quick Look helper scripts |
+## Documentation
 
-## Build
-
-Requires Xcode 27, [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`) and an Apple developer team for signing:
-
-```sh
-echo 'DEVELOPMENT_TEAM = <your team ID>' > Config/Signing.local.xcconfig   # gitignored
-```
-
-```sh
-scripts/build.sh                         # → build/Build/Products/Debug/Peek.app
-open build/Build/Products/Debug/Peek.app # registers the extensions
-scripts/ql-status.sh                     # check registration
-qlmanage -p Fixtures/samples/sample.swift   # preview from the command line
-```
-
-`PeekKit` tests run standalone: `cd PeekKit && swift test`. Manual Quick Look checks: [docs/TESTING.md](docs/TESTING.md).
-
-## Architecture
-
-Both extensions are thin wrappers around `FormatRegistry` (`PeekKit/Sources/PeekFormats`), which maps a file's content type to a `FormatRenderer`. A renderer returns HTML for the preview and an `NSAttributedString` for the thumbnail page.
-
-| Module | Role |
-|---|---|
-| `PeekCore` | `FormatRenderer` protocol, settings (App Group), themes, HTML page, text file reading, thumbnail page |
-| `PeekHighlight` | highlight.js in JavaScriptCore; highlighted HTML → lines / attributed string |
-| `Formats/*` | One module per format |
-| `PeekFormats` | `FormatRegistry` |
-
-### Security
-
-Quick Look's data-based HTML previews run JavaScript, allow network access and ignore Content-Security-Policy (verified on macOS 26.6). Renderers therefore never emit untrusted markup unfiltered:
-
-- Source code and front matter are always escaped.
-- Raw HTML in Markdown is, depending on the `rawHTML` setting, either sanitized by an allowlist (`HTMLSanitizer`, default) or shown as text. Sanitizing removes scripts, styles, event handlers, embedded frames and remote resources.
-- Links keep only `http`, `https`, `mailto` and relative targets. Remote images load only if `allowRemoteImages` is enabled.
-
-The preview extension may read any file (`temporary-exception.files.absolute-path.read-only`) so Markdown can embed local images. The host app has `network.client` because `WKWebView` (live preview, JavaScript disabled) doesn't launch in a sandboxed app without it.
-
-### Adding a format
-
-1. Create `PeekKit/Sources/Formats/<Name>/` with a type conforming to `FormatRenderer`; add the target to `Package.swift` and as a dependency of `PeekFormats`.
-2. Append the renderer to `FormatRegistry.renderers`.
-3. List its content types under `QLSupportedContentTypes` in `project.yml`. Types macOS doesn't declare go into `UTImportedTypeDeclarations` of the app target.
-4. `swift test` fails if the registry and `project.yml` disagree.
-
-### Content type caveats
-
-- Supported types are fixed at build time; Quick Look can't be extended at runtime.
-- Some extensions are owned by system types and can't be claimed, e.g. `.ts` (MPEG-2 transport stream) and `.txt`.
-- Quick Look dispatches on exact content type identifiers, not conformance: every type must be listed.
-- An app exporting a type for an extension overrides Peek's imported declaration; if Peek doesn't list that identifier, the file isn't previewed by Peek.
-
-## Releasing
-
-Pushing a tag `v<version>` runs `.github/workflows/release.yml`, which calls `scripts/release.sh <version>` (archive, Developer ID signing without provisioning profiles, DMG, notarization, stapling) and publishes `Peek-<version>.dmg` as a GitHub release.
-
-```sh
-git tag v0.1.0 && git push origin v0.1.0
-```
-
-The script also runs locally: `NOTARY_PROFILE=peek-notary scripts/release.sh 0.1.0`. `SKIP_NOTARIZE=1 SIGN_IDENTITY="Apple Development"` tests packaging without a Developer ID certificate.
-
-### One-time setup
-
-1. **Developer ID Application certificate** (requires the Account Holder role): Xcode → Settings → Accounts → team → Manage Certificates → + → Developer ID Application.
-2. **App Store Connect API key** for notarization: [App Store Connect](https://appstoreconnect.apple.com) → Users and Access → Integrations → Team Keys → +, access "Developer". Download the `.p8` (only possible once) and note the Key ID and Issuer ID. For local use:
-   ```sh
-   xcrun notarytool store-credentials peek-notary --key AuthKey_<KEYID>.p8 --key-id <KEYID> --issuer <ISSUER_ID>
-   ```
-3. **Repository secrets** for the workflow. Export the certificate with its private key from Keychain Access (My Certificates → Developer ID Application → Export, `.p12` with a password), then:
-   ```sh
-   gh secret set APPLE_TEAM_ID --body <TEAM_ID>
-   base64 -i developer-id.p12 | gh secret set DEVELOPER_ID_P12
-   gh secret set DEVELOPER_ID_P12_PASSWORD           # prompts
-   gh secret set NOTARY_KEY_P8 < AuthKey_<KEYID>.p8
-   gh secret set NOTARY_KEY_ID --body <KEYID>
-   gh secret set NOTARY_ISSUER_ID --body <ISSUER_ID>
-   ```
+- [Development](docs/DEVELOPMENT.md): layout, build, architecture, security model, adding a format
+- [Testing](docs/TESTING.md): automated tests and manual Quick Look checklist
+- [Releasing](docs/RELEASING.md): signed and notarized DMG releases via GitHub Actions
 
 ## License
 
-MIT. See `THIRD_PARTY_NOTICES.md` for bundled dependencies.
+MIT, see [LICENSE](LICENSE). Bundled dependencies: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
