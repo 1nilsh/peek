@@ -4,6 +4,7 @@
 
 ### Changed
 
+- The Dark thumbnails toggle is now a Thumbnails picker: Light or Dark. An existing Dark thumbnails setting carries over.
 - Check File shows separately whether Peek or macOS provides the preview and the thumbnail. Supported Types has a Thumbnail column. The live preview shows no thumbnail for Markdown, whose thumbnails come from macOS.
 
 ### Fixed

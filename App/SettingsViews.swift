@@ -54,7 +54,10 @@ struct AppearanceSettings: View {
                 Text("System follows the light or dark appearance of macOS.")
             }
             Section {
-                Toggle("Dark thumbnails", isOn: $store.settings.darkThumbnails)
+                Picker("Thumbnails", selection: $store.settings.thumbnailAppearance) {
+                    Text("Light").tag(Settings.ThumbnailAppearance.light)
+                    Text("Dark").tag(Settings.ThumbnailAppearance.dark)
+                }
                 LabeledContent("Thumbnail text") {
                     let sizes = Settings.ThumbnailTextSize.allCases
                     HStack {
@@ -83,7 +86,7 @@ struct AppearanceSettings: View {
                         .textSelection(.enabled)
                 }
             } footer: {
-                Text("Finder keeps thumbnails it has already made until the file changes. Refresh discards them.")
+                Text("Finder keeps thumbnails it has already made until the file changes, also when the system appearance changes. Refresh discards them.")
             }
             Section("Code") {
                 Toggle("Wrap long lines", isOn: $store.settings.wordWrap)

@@ -67,10 +67,22 @@ import Testing
         s.tabWidth = 2
         s.rawHTML = .escape
         s.appearance = .dark
-        s.darkThumbnails = true
+        s.thumbnailAppearance = .dark
         s.thumbnailTextSize = .veryLarge
         s.save(to: d)
         #expect(Settings.load(from: d) == s)
+    }
+
+    @Test func migratesDarkThumbnails() {
+        let d = UserDefaults(suiteName: "peek-test-\(UUID().uuidString)")!
+        d.set(false, forKey: Settings.Key.darkThumbnails.rawValue)
+        #expect(Settings.load(from: d).thumbnailAppearance == .light)
+        d.set(true, forKey: Settings.Key.darkThumbnails.rawValue)
+        let s = Settings.load(from: d)
+        #expect(s.thumbnailAppearance == .dark)
+        s.save(to: d)
+        #expect(d.object(forKey: Settings.Key.darkThumbnails.rawValue) == nil)
+        #expect(Settings.load(from: d).thumbnailAppearance == .dark)
     }
 }
 
@@ -92,7 +104,7 @@ import Testing
     @Test func thumbnailPaletteFollowsSetting() {
         var s = Settings()
         #expect(RenderContext(settings: s, contentType: nil).thumbnailPalette.background == Theme.xcode.light.background)
-        s.darkThumbnails = true
+        s.thumbnailAppearance = .dark
         #expect(RenderContext(settings: s, contentType: nil).thumbnailPalette.background == Theme.xcode.dark.background)
     }
 

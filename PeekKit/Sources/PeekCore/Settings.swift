@@ -3,7 +3,9 @@ import Foundation
 /// User settings, stored as individual keys in the App Group defaults so SwiftUI can bind them via `@AppStorage`.
 public struct Settings: Sendable, Equatable {
     public enum Key: String, CaseIterable, Sendable {
-        case themeID, appearance, darkThumbnails, thumbnailTextSize, fontFamily, fontSize, wordWrap, lineNumbers, tabWidth, highlightLimit, showFrontMatter, allowRemoteImages, rawHTML
+        case themeID, appearance, thumbnailAppearance, thumbnailTextSize, fontFamily, fontSize, wordWrap, lineNumbers, tabWidth, highlightLimit, showFrontMatter, allowRemoteImages, rawHTML
+        /// 0.1.1's on/off predecessor of `thumbnailAppearance`; only read to migrate it.
+        case darkThumbnails
     }
 
     /// Which theme variant previews use.
@@ -13,6 +15,11 @@ public struct Settings: Sendable, Equatable {
 
         /// Value of the CSS `color-scheme` property.
         public var cssColorScheme: String { self == .system ? "light dark" : rawValue }
+    }
+
+    /// No system option: Finder doesn't request new thumbnails when the system appearance changes (verified on macOS 26.6).
+    public enum ThumbnailAppearance: String, CaseIterable, Sendable {
+        case light, dark
     }
 
     public enum ThumbnailTextSize: String, CaseIterable, Sendable {
@@ -39,8 +46,7 @@ public struct Settings: Sendable, Equatable {
 
     public var themeID = Theme.xcode.id
     public var appearance = Appearance.system
-    /// No system option: Finder caches thumbnails and doesn't redraw them when the system appearance changes.
-    public var darkThumbnails = false
+    public var thumbnailAppearance = ThumbnailAppearance.light
     public var thumbnailTextSize = ThumbnailTextSize.large
     /// Empty means the system monospaced font.
     public var fontFamily = ""
@@ -61,7 +67,11 @@ public struct Settings: Sendable, Equatable {
         guard let d = defaults else { return s }
         if let v = d.string(forKey: Key.themeID.rawValue) { s.themeID = v }
         if let v = d.string(forKey: Key.appearance.rawValue).flatMap(Appearance.init) { s.appearance = v }
-        if d.object(forKey: Key.darkThumbnails.rawValue) != nil { s.darkThumbnails = d.bool(forKey: Key.darkThumbnails.rawValue) }
+        if let v = d.string(forKey: Key.thumbnailAppearance.rawValue).flatMap(ThumbnailAppearance.init) {
+            s.thumbnailAppearance = v
+        } else if d.bool(forKey: Key.darkThumbnails.rawValue) {
+            s.thumbnailAppearance = .dark
+        }
         if let v = d.string(forKey: Key.thumbnailTextSize.rawValue).flatMap(ThumbnailTextSize.init) { s.thumbnailTextSize = v }
         if let v = d.string(forKey: Key.fontFamily.rawValue) { s.fontFamily = v }
         if d.object(forKey: Key.fontSize.rawValue) != nil { s.fontSize = d.double(forKey: Key.fontSize.rawValue) }
@@ -79,7 +89,8 @@ public struct Settings: Sendable, Equatable {
         guard let d = defaults else { return }
         d.set(themeID, forKey: Key.themeID.rawValue)
         d.set(appearance.rawValue, forKey: Key.appearance.rawValue)
-        d.set(darkThumbnails, forKey: Key.darkThumbnails.rawValue)
+        d.set(thumbnailAppearance.rawValue, forKey: Key.thumbnailAppearance.rawValue)
+        d.removeObject(forKey: Key.darkThumbnails.rawValue)
         d.set(thumbnailTextSize.rawValue, forKey: Key.thumbnailTextSize.rawValue)
         d.set(fontFamily, forKey: Key.fontFamily.rawValue)
         d.set(fontSize, forKey: Key.fontSize.rawValue)

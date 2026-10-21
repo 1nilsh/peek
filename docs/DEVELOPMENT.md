@@ -41,7 +41,7 @@ Both extensions are thin wrappers around `FormatRegistry` (`PeekKit/Sources/Peek
 | `Formats/*` | One module per format |
 | `PeekFormats` | `FormatRegistry` |
 
-Quick Look caches thumbnails keyed on file size and modification date, so settings changes don't reach existing thumbnails. There is no API to invalidate the cache; the app's Refresh button runs `qlmanage -r cache`, which works from the sandbox. Finder also keeps thumbnails in memory, so the app then quits Finder via Apple Event (the sandbox blocks signals, so no `killall`) and relaunches it.
+Quick Look caches thumbnails keyed on file size and modification date, so settings changes don't reach existing thumbnails. Appearance changes don't either: Finder requests no new thumbnails when the system switches between light and dark, and the thumbnail extension has no `NSApp` whose appearance it could follow (verified on macOS 26.6). Thumbnails are therefore light or dark by setting. There is no API to invalidate the cache; the app's Refresh button runs `qlmanage -r cache`, which works from the sandbox. Finder also keeps thumbnails in memory, so the app then quits Finder via Apple Event (the sandbox blocks signals, so no `killall`) and relaunches it.
 
 ### Security
 

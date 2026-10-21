@@ -49,12 +49,12 @@ Preview with `qlmanage -p <file>` or Space in Finder. The extension logs each re
 
 ### Thumbnails
 
-Finder icon view on `Fixtures/`: highlighted text on a white page for Peek's types; dark page with Dark thumbnails on. `sample.md`, `sample.json` and `sample.s` show macOS's plain-text thumbnail, `sample.mkd` Peek's (see [content type caveats](DEVELOPMENT.md#content-type-caveats)). Run `scripts/ql-reset.sh` after changes.
+Finder icon view on `Fixtures/`: highlighted text on a white page for Peek's types; dark page with Thumbnails set to Dark. `sample.md`, `sample.json` and `sample.s` show macOS's plain-text thumbnail, `sample.mkd` Peek's (see [content type caveats](DEVELOPMENT.md#content-type-caveats)). Run `scripts/ql-reset.sh` after changes.
 
 ### Settings app
 
 - [ ] Setup: button opens Login Items & Extensions
-- [ ] Appearance: theme, appearance, font, size, wrap, line numbers update the live preview; Dark thumbnails and Thumbnail text update the thumbnail; Refresh… asks to confirm, prompts once to control Finder, relaunches Finder with updated thumbnails; Light/Dark switch (disabled unless Appearance is System); thumbnail bottom right; Restore Defaults
+- [ ] Appearance: theme, appearance, font, size, wrap, line numbers update the live preview; Thumbnails and Thumbnail text update the thumbnail; Refresh… asks to confirm, prompts once to control Finder, relaunches Finder with updated thumbnails; Light/Dark switch (disabled unless Appearance is System); thumbnail bottom right; Restore Defaults
 - [ ] Markdown: live preview of `sample.md` has no thumbnail
 - [ ] Supported Types: no "Not declared on this Mac" rows; Thumbnail is macOS for Markdown, JSON and assembly, Peek otherwise
 - [ ] Check File: `sample.s` → Preview Peek (Source Code), Thumbnail macOS; `sample.mkd` → both Peek (Markdown); a `.ts` file → MPEG-2 transport stream, not handled
