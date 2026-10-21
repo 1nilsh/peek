@@ -28,6 +28,8 @@ Highlighting uses [highlight.js](https://highlightjs.org) and Markdown parsing u
 | Raw HTML in Markdown | Cleaned up (scripts, styles and remote content removed) / shown as text | Cleaned up |
 | Remote images in Markdown | Load / block | Block |
 
+Finder keeps thumbnails it has already made until the file changes. After changing thumbnail settings, click Refresh… under Appearance: Peek clears the thumbnail cache and relaunches Finder.
+
 ## Supported formats
 
 `.bash` `.c` `.c++` `.cc` `.cjs` `.clj` `.cljc` `.cljs` `.cmake` `.containerfile` `.cp` `.cpp` `.cs` `.csh` `.css` `.cxx` `.dart` `.diff` `.dockerfile` `.edn` `.erl` `.ex` `.exs` `.fish` `.gmk` `.go` `.gql` `.gradle` `.graphql` `.groovy` `.h` `.h++` `.hh` `.hp` `.hpp` `.hrl` `.hs` `.hxx` `.ini` `.inl` `.ipp` `.jav` `.java` `.javascript` `.js` `.jscript` `.json` `.json5` `.jsonc` `.jsx` `.ksh` `.kt` `.kts` `.less` `.lhs` `.lua` `.m` `.mak` `.make` `.markdown` `.md` `.mdown` `.mjs` `.mk` `.mkd` `.mkdn` `.ml` `.mli` `.mm` `.nix` `.patch` `.ph3` `.ph4` `.php` `.php3` `.php4` `.phtml` `.pl` `.pm` `.proto` `.py` `.rb` `.rbw` `.rc` `.rs` `.s` `.sc` `.scala` `.scss` `.sh` `.sql` `.svelte` `.swift` `.swiftinterface` `.tcsh` `.toml` `.tsx` `.vue` `.xml` `.yaml` `.yml` `.zsh`
@@ -37,6 +39,7 @@ Highlighting uses [highlight.js](https://highlightjs.org) and Markdown parsing u
 - Peek makes no network requests and collects no data.
 - All parts of Peek are sandboxed. The preview extension may read any file (read-only), so that Markdown files can show the local images they reference.
 - The settings app has the outgoing network entitlement only because its live preview (`WKWebView`) doesn't start in a sandboxed app without it.
+- The settings app may send Apple Events to Finder, only to relaunch it when you refresh thumbnails. macOS asks for permission the first time.
 - Quick Look previews run scripts and may load remote content. Peek therefore escapes source code, cleans up or escapes HTML in Markdown, and blocks remote images unless you enable them. Details: [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md#security).
 
 ## Install

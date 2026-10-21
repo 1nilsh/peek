@@ -41,6 +41,8 @@ Both extensions are thin wrappers around `FormatRegistry` (`PeekKit/Sources/Peek
 | `Formats/*` | One module per format |
 | `PeekFormats` | `FormatRegistry` |
 
+Quick Look caches thumbnails keyed on file size and modification date, so settings changes don't reach existing thumbnails. There is no API to invalidate the cache; the app's Refresh button runs `qlmanage -r cache`, which works from the sandbox. Finder also keeps thumbnails in memory, so the app then quits Finder via Apple Event (the sandbox blocks signals, so no `killall`) and relaunches it.
+
 ### Security
 
 Quick Look's data-based HTML previews run JavaScript, allow network access and ignore Content-Security-Policy (verified on macOS 26.6). Renderers therefore never emit untrusted markup unfiltered:
@@ -49,7 +51,7 @@ Quick Look's data-based HTML previews run JavaScript, allow network access and i
 - Raw HTML in Markdown is, depending on the `rawHTML` setting, either sanitized by an allowlist (`HTMLSanitizer`, default) or shown as text. Sanitizing removes scripts, styles, event handlers, embedded frames and remote resources.
 - Links keep only `http`, `https`, `mailto` and relative targets. Remote images load only if `allowRemoteImages` is enabled.
 
-The preview extension may read any file (`temporary-exception.files.absolute-path.read-only`) so Markdown can embed local images. The host app has `network.client` because `WKWebView` (live preview, JavaScript disabled) doesn't launch in a sandboxed app without it.
+The preview extension may read any file (`temporary-exception.files.absolute-path.read-only`) so Markdown can embed local images. The host app has `network.client` because `WKWebView` (live preview, JavaScript disabled) doesn't launch in a sandboxed app without it, and may send Apple Events to Finder only (`temporary-exception.apple-events`, `automation.apple-events`) to relaunch it; macOS asks the user on first use.
 
 ### Adding a format
 

@@ -51,6 +51,7 @@ targets:
         LSApplicationCategoryType: public.app-category.developer-tools
         NSHumanReadableCopyright: © Nils Hodys. MIT License.
         PeekAppGroup: $(PEEK_APP_GROUP)
+        NSAppleEventsUsageDescription: Peek relaunches Finder so it shows refreshed thumbnails.
         # Imported: an app exporting the same identifier takes precedence. Third-party identifiers are imported
         # so they exist without their owning app; bz.nils.peek.source.* replace dyn.* types.
         UTImportedTypeDeclarations:
@@ -91,6 +92,9 @@ targets:
         com.apple.security.application-groups: [$(PEEK_APP_GROUP)]
         # WKWebView's helper processes fail to launch in a sandboxed app without it, even for local HTML.
         com.apple.security.network.client: true
+        # Quit Finder after resetting the thumbnail cache; Finder keeps thumbnails in memory.
+        com.apple.security.automation.apple-events: true
+        com.apple.security.temporary-exception.apple-events: [com.apple.finder]
     dependencies:
       - target: PeekPreview
       - target: PeekThumbnail
